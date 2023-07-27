@@ -1,0 +1,4 @@
+(executable
+ (public_name real_estate_appraisal_sim)
+ (name main)
+ (libraries real_estate_appraisal_sim))
