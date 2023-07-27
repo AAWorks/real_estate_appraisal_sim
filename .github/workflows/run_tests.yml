@@ -9,6 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
+      - name: Opam install
+        run: apt install opam
+      
+      - name: OCaml install
+        run: apt install ocaml
+      
+      - name: Dune Install
+        run: opam install dune
+      
       - name: Install Dependencies
         run: opam install . --deps-only --locked
       
