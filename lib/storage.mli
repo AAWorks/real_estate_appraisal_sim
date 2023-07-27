@@ -1,5 +1,4 @@
 open! Core
-open! Scrape
 open! Async
 
 module House : sig

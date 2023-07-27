@@ -1,7 +1,6 @@
 [@@@disable_unused_warnings]
 
 open! Core
-open! Scrape
 open! Async
 open! Jsonaf.Export
 (* open! postgresql *)
@@ -93,4 +92,9 @@ let pull_data () =
   in
   let houses_per_view = 180 / List.length locations / 2 in
   store_houses ~locations ~houses_per_view
+;;
+
+let%expect_test "evaluate_win_for_x_ttt" =
+  print_endline ();
+  [%expect {| (Game_over(winner(X))) |}]
 ;;
