@@ -1,0 +1,34 @@
+name: Run Tests
+
+on: [push]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Add OCaml Rep
+        run: add-apt-repository ppa:avsm/ppa
+
+      - name: Update APT
+        run: apt update
+      
+      - name: Opam install
+        run: apt install opam
+      
+      - name: OCaml install
+        run: apt install ocaml
+      
+      - name: Dune Install
+        run: opam install dune
+      
+      - name: Install Dependencies
+        run: opam install . --deps-only --locked
+      
+      - name: Build project
+        run: dune build
+      
+      - name: Test
+        run: dune test
