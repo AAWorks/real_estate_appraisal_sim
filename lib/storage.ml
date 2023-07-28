@@ -2,6 +2,7 @@
 
 open! Core
 open! Async
+open! Scrape
 open! Jsonaf.Export
 (* open! postgresql *)
 
@@ -37,9 +38,6 @@ module House = struct
   ;;
 end
 
-let house_data ~location:_ ~view:_ ~n_houses:_ = assert false
-let photos ~zpid:_ = assert false
-
 let get_location_data ~location ~(houses_per_view : int) : string list list =
   let water_data =
     house_data ~location ~view:"water" ~n_houses:houses_per_view
@@ -47,7 +45,8 @@ let get_location_data ~location ~(houses_per_view : int) : string list list =
   let city_data =
     house_data ~location ~view:"city" ~n_houses:houses_per_view
   in
-  water_data @ city_data
+  let other_data = house_data ~location ~view:"" ~n_houses:houses_per_view in
+  water_data @ city_data @ other_data
 ;;
 
 let store_houses ~locations ~(houses_per_view : int) : unit Deferred.t =
@@ -90,7 +89,7 @@ let pull_data () =
     ; "seattle"
     ]
   in
-  let houses_per_view = 180 / List.length locations / 2 in
+  let houses_per_view = 180 / List.length locations / 3 in
   store_houses ~locations ~houses_per_view
 ;;
 

@@ -37,3 +37,14 @@ let questions_as_json () =
     (QuestionBank.n_random_houses questionbank ~n_houses:10
      |> QuestionBank.to_json)
 ;;
+
+let%expect_test "from_file" =
+  let testbank =
+    QuestionBank.from_file ~filename:"resources/house_data.txt"
+  in
+  let%bind houses = testbank in
+  let (testhouse : string) = List.hd_exn houses |> House.address in
+  print_s [%sexp (testhouse : string)];
+  [%expect {| "new york city, NY" |}];
+  Deferred.return ()
+;;
