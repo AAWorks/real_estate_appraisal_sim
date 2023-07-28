@@ -2,7 +2,7 @@ open! Core
 open! Async
 
 module House : sig
-  type t [@@deriving sexp, equal] [@@jsonaf.allow_extra_fields]
+  type t [@@deriving sexp, equal, jsonaf] [@@jsonaf.allow_extra_fields]
 
   val string_price : t -> string
   val address : t -> string
