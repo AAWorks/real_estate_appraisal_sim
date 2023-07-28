@@ -1,4 +1,6 @@
 (executable
  (public_name real_estate_appraisal_sim)
  (name main)
- (libraries real_estate_appraisal_sim))
+ (preprocess
+  (pps ppx_jane))
+ (libraries core core_unix.command_unix real_estate_appraisal_sim))

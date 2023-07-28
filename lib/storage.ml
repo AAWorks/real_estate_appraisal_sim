@@ -88,7 +88,7 @@ let pull_data () =
     ; "seattle"
     ]
   in
-  let houses_per_view = 180 / List.length locations / 2 in
+  let houses_per_view = 90 / List.length locations / 2 in
   store_houses ~locations ~houses_per_view
 ;;
 
