@@ -4,6 +4,7 @@ open! Core
 open! Async
 open! Scrape
 open! Jsonaf.Export
+
 (* open! postgresql *)
 
 module House = struct
@@ -21,10 +22,7 @@ module House = struct
   let string_price t = "$" ^ t.price
   let address t = t.city ^ ", " ^ t.state
   let specs t = t.bedrooms ^ " bed, " ^ t.bathrooms ^ " bath"
-
-  let fields =
-    [ "zpid"; "city"; "state"; "bedrooms"; "bathrooms"; "price"; "images" ]
-  ;;
+  let fields = [ "zpid"; "city"; "state"; "bedrooms"; "bathrooms"; "price" ]
 
   let from_scraped_data ~mapped_details ~images =
     { zpid = Map.find_exn mapped_details "zpid"
@@ -38,20 +36,26 @@ module House = struct
   ;;
 end
 
-let get_location_data ~location ~(houses_per_view : int) : string list list =
+let get_location_data ~location ~(houses_per_view : int)
+  : string list list Deferred.t
+  =
   let water_data =
     house_data ~location ~view:"water" ~n_houses:houses_per_view
   in
+  let%bind () = Clock.after (Time_float.Span.of_sec 1.5) in
   (* let city_data = house_data ~location ~view:"city"
      ~n_houses:houses_per_view in *)
   let other_data = house_data ~location ~view:"" ~n_houses:houses_per_view in
-  water_data @ other_data
+  let%bind () = Clock.after (Time_float.Span.of_sec 1.5) in
+  return (water_data @ other_data)
 ;;
 
 let store_houses ~locations ~(houses_per_view : int) : unit Deferred.t =
-  let house_sexps =
-    List.concat_map locations ~f:(fun location ->
-      let location_details = get_location_data ~location ~houses_per_view in
+  let%bind house_sexps =
+    Deferred.List.concat_map locations ~how:`Sequential ~f:(fun location ->
+      let%bind location_details =
+        get_location_data ~location ~houses_per_view
+      in
       List.map location_details ~f:(fun house_details ->
         let mapped_details =
           house_details
@@ -62,7 +66,8 @@ let store_houses ~locations ~(houses_per_view : int) : unit Deferred.t =
           photos ~zpid:(List.nth_exn house_details 0)
         in
         let house = House.from_scraped_data ~mapped_details ~images in
-        House.sexp_of_t house))
+        House.sexp_of_t house)
+      |> return)
   in
   Writer.save_sexps "resources/house_data.txt" house_sexps
 ;;
@@ -80,7 +85,7 @@ let pull_data () =
     ; "greenwich"
     ; "bethesda"
     ; "potomac"
-    ; "martha%Cs vineyard"
+    ; "key west"
     ; "hollywood hills"
     ; "palo alto"
     ; "east palo alto"

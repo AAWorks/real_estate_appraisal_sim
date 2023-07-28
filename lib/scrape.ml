@@ -50,7 +50,7 @@ let house_data ~(location : string) ~(view : string) ~(n_houses : int) =
     ^ "&singleStory=false&onlyWithPhotos=true"
   in
   let rapid =
-    [ "X-RapidAPI-Key: 89e8d18db2msh750cb1be8006c38p19c402jsne47214e05847"
+    [ "X-RapidAPI-Key: c41557561amsha79320cdb4ab359p156dfcjsn61eb3e8d818d"
     ; "X-RapidAPI-Host: zillow56.p.rapidapi.com"
     ]
   in
@@ -60,11 +60,10 @@ let house_data ~(location : string) ~(view : string) ~(n_houses : int) =
   List.map results ~f:(fun house ->
     let bathroom = house |> member_exn "bathrooms" |> to_string_hum in
     let zpid = house |> member_exn "zpid" |> to_string_hum in
-    let city = house |> member_exn "city" |> to_string_hum in
     let state = house |> member_exn "state" |> to_string_hum in
     let bedroom = house |> member_exn "bedrooms" |> to_string_hum in
     let price = house |> member_exn "price" |> to_string_hum in
-    [ zpid; city; state; bedroom; bathroom; price ])
+    [ zpid; location; state; bedroom; bathroom; price ])
 ;;
 
 let%expect_test "house_call" =
@@ -79,7 +78,7 @@ let photos ~(zpid : string) =
     "https://zillow-data-v2.p.rapidapi.com/properties/detail?zpid=" ^ zpid
   in
   let rapid =
-    [ "X-RapidAPI-Key: 89e8d18db2msh750cb1be8006c38p19c402jsne47214e05847"
+    [ "X-RapidAPI-Key: c41557561amsha79320cdb4ab359p156dfcjsn61eb3e8d818d"
     ; "X-RapidAPI-Host: zillow-data-v2.p.rapidapi.com"
     ]
   in
