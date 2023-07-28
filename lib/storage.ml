@@ -94,7 +94,28 @@ let pull_data () =
   store_houses ~locations ~houses_per_view
 ;;
 
-let%expect_test "evaluate_win_for_x_ttt" =
-  print_endline ();
-  [%expect {| (Game_over(winner(X))) |}]
+let%expect_test "house_rec" =
+  let testhouse =
+    House.from_scraped_data
+      ~mapped_details:
+        (String.Map.of_alist_exn
+           [ "zpid", "123456"
+           ; "city", "NYC"
+           ; "state", "NY"
+           ; "bedrooms", "3.0"
+           ; "bathrooms", "2.0"
+           ; "price", "1000000"
+           ])
+      ~images:[ "imageblahblahblah" ]
+  in
+  let houseaddy = House.address testhouse in
+  print_s [%sexp (houseaddy : string)];
+  [%expect {| "NYC, NY" |}];
+  let housespecs = House.specs testhouse in
+  print_s [%sexp (housespecs : string)];
+  [%expect {| "3.0 bed, 2.0 bath" |}];
+  let houseprice = House.string_price testhouse in
+  print_s [%sexp (houseprice : string)];
+  [%expect {| $1000000 |}];
+  Deferred.return ()
 ;;
