@@ -14,7 +14,7 @@ module QuestionBank = struct
     List.map sexplist ~f:(fun house_sexp -> House.t_of_sexp house_sexp)
   ;;
 
-  let n_random_houses (t : House.t list) ~n_houses =
+  let n_random_houses (t : House.t list) ~n_houses : t =
     let shuffled_houses = List.permute t in
     List.take shuffled_houses n_houses
   ;;
@@ -22,7 +22,14 @@ module QuestionBank = struct
   let to_json (t : t) = jsonaf_of_t t
 end
 
-let _get_questions () =
+let questions_as_records () =
+  let%bind questionbank =
+    QuestionBank.from_file ~filename:"resources/house_data.txt"
+  in
+  return (QuestionBank.n_random_houses questionbank ~n_houses:10)
+;;
+
+let questions_as_json () =
   let%bind questionbank =
     QuestionBank.from_file ~filename:"resources/house_data.txt"
   in
