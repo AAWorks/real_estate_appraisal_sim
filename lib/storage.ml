@@ -42,11 +42,10 @@ let get_location_data ~location ~(houses_per_view : int) : string list list =
   let water_data =
     house_data ~location ~view:"water" ~n_houses:houses_per_view
   in
-  let city_data =
-    house_data ~location ~view:"city" ~n_houses:houses_per_view
-  in
+  (* let city_data = house_data ~location ~view:"city"
+     ~n_houses:houses_per_view in *)
   let other_data = house_data ~location ~view:"" ~n_houses:houses_per_view in
-  water_data @ city_data @ other_data
+  water_data @ other_data
 ;;
 
 let store_houses ~locations ~(houses_per_view : int) : unit Deferred.t =
@@ -89,7 +88,7 @@ let pull_data () =
     ; "seattle"
     ]
   in
-  let houses_per_view = 180 / List.length locations / 3 in
+  let houses_per_view = 180 / List.length locations / 2 in
   store_houses ~locations ~houses_per_view
 ;;
 
