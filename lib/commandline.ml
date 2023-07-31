@@ -27,27 +27,31 @@ let prompt_for_guess ~show_hint ~house =
 (* if x = then ( Printf.printf "%d is too basic. Try again.\n" x;
    prompt_for_move ~show_hint:true) else x *)
 
-let rec run_game ~questions : unit =
+let rec run_game ~questions ~points : unit =
   match questions with
   | house :: remaining ->
     let guess = prompt_for_guess ~show_hint:true ~house in
-    if House.is_price house guess
-    then
-      Core.Printf.printf
-        "Well done! You guessed: %s\nActual price: %s\n\n"
-        (BetterString.to_price_string guess)
-        (House.string_price house)
-    else
-      Core.Printf.printf
-        "Better luck next time. You guessed: %s\nActual price: %s\n\n"
-        (BetterString.to_price_string guess)
-        (House.string_price house);
-    run_game ~questions:remaining
-  | [] -> Core.Printf.printf "Thanks for playing!"
+    let new_pts =
+      if House.is_price house guess
+      then (
+        Core.Printf.printf
+          "Well done! You guessed: %s\nActual price: %s\n\n"
+          (BetterString.to_price_string guess)
+          (House.string_price house);
+        points + 1)
+      else (
+        Core.Printf.printf
+          "Better luck next time. You guessed: %s\nActual price: %s\n\n"
+          (BetterString.to_price_string guess)
+          (House.string_price house);
+        points)
+    in
+    run_game ~questions:remaining ~points:new_pts
+  | [] -> Core.Printf.printf "Thanks for playing! Total Score: %d\n\n" points
 ;;
 
 let run () =
   let%bind questions = questions_as_records () in
   Core.Printf.printf "Welcome to Property Prodigy!\n\n";
-  Deferred.return (run_game ~questions)
+  Deferred.return (run_game ~questions ~points:0)
 ;;
