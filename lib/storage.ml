@@ -36,12 +36,6 @@ module House = struct
   [@@deriving sexp, equal, jsonaf] [@@jsonaf.allow_extra_fields]
 
   let int_price t = t.price |> Float.of_string |> Int.of_float
-
-  let is_price ?(allowed_error = 1 / 10) t other =
-    let margin = int_price t * allowed_error in
-    int_price t - margin < other && other < int_price t + margin
-  ;;
-
   let string_price t = BetterString.to_price_string (int_price t)
 
   let address t =

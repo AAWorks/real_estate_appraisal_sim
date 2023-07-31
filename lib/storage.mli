@@ -9,7 +9,7 @@ end
 module House : sig
   type t [@@deriving sexp, equal, jsonaf] [@@jsonaf.allow_extra_fields]
 
-  val is_price : ?allowed_error:int -> t -> int -> bool
+  val int_price : t -> int
   val string_price : t -> string
   val address : t -> string
   val specs : t -> string
