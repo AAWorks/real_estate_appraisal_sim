@@ -16,6 +16,11 @@ module BetterString = struct
     |> List.map ~f:(fun word -> String.capitalize word)
     |> String.concat ~sep:" "
   ;;
+
+  let to_price_string n =
+    "$"
+    ^ (n |> Printf.sprintf "%#d" |> String.tr ~target:'_' ~replacement:',')
+  ;;
 end
 
 module House = struct
@@ -30,7 +35,14 @@ module House = struct
     }
   [@@deriving sexp, equal, jsonaf] [@@jsonaf.allow_extra_fields]
 
-  let string_price t = "$" ^ t.price
+  let int_price t = t.price |> Float.of_string |> Int.of_float
+
+  let is_price ?(allowed_error = 1 / 10) t other =
+    let margin = int_price t * allowed_error in
+    int_price t - margin < other && other < int_price t + margin
+  ;;
+
+  let string_price t = BetterString.to_price_string (int_price t)
 
   let address t =
     BetterString.title (pct_decode t.city)
@@ -143,6 +155,6 @@ let%expect_test "house_rec" =
   [%expect {| "3.0 bed, 2.0 bath" |}];
   let houseprice = House.string_price testhouse in
   print_s [%sexp (houseprice : string)];
-  [%expect {| $1000000 |}];
+  [%expect {| $1,000,000 |}];
   Deferred.return ()
 ;;

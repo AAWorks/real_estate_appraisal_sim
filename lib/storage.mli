@@ -3,11 +3,13 @@ open! Async
 
 module BetterString : sig
   val title : string -> string
+  val to_price_string : int -> string
 end
 
 module House : sig
   type t [@@deriving sexp, equal, jsonaf] [@@jsonaf.allow_extra_fields]
 
+  val is_price : ?allowed_error:int -> t -> int -> bool
   val string_price : t -> string
   val address : t -> string
   val specs : t -> string
