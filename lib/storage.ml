@@ -3,9 +3,25 @@
 open! Core
 open! Async
 open! Scrape
+open! Uri
 open! Jsonaf.Export
 
 (* open! postgresql *)
+module BetterString = struct
+  include String
+
+  let title str =
+    str
+    |> String.split ~on:' '
+    |> List.map ~f:(fun word -> String.capitalize word)
+    |> String.concat ~sep:" "
+  ;;
+
+  let to_price_string n =
+    "$"
+    ^ (n |> Printf.sprintf "%#d" |> String.tr ~target:'_' ~replacement:',')
+  ;;
+end
 
 module House = struct
   type t =
@@ -19,9 +35,29 @@ module House = struct
     }
   [@@deriving sexp, equal, jsonaf] [@@jsonaf.allow_extra_fields]
 
-  let string_price t = "$" ^ t.price
-  let address t = t.city ^ ", " ^ t.state
+  let int_price t = t.price |> Float.of_string |> Int.of_float
+
+  let is_price ?(allowed_error = 1 / 10) t other =
+    let margin = int_price t * allowed_error in
+    int_price t - margin < other && other < int_price t + margin
+  ;;
+
+  let string_price t = BetterString.to_price_string (int_price t)
+
+  let address t =
+    BetterString.title (pct_decode t.city)
+    ^ ", "
+    ^ (String.tr ~target:'"' ~replacement:' ' t.state |> String.strip)
+  ;;
+
   let specs t = t.bedrooms ^ " bed, " ^ t.bathrooms ^ " bath"
+
+  let images t =
+    List.map t.images ~f:(fun url ->
+      String.tr ~target:'"' ~replacement:' ' url |> String.strip)
+  ;;
+
+  let images_as_string t = String.concat ~sep:", " (images t)
   let fields = [ "zpid"; "city"; "state"; "bedrooms"; "bathrooms"; "price" ]
 
   let from_scraped_data ~mapped_details ~images =
@@ -103,7 +139,7 @@ let%expect_test "house_rec" =
       ~mapped_details:
         (String.Map.of_alist_exn
            [ "zpid", "123456"
-           ; "city", "NYC"
+           ; "city", "new york city"
            ; "state", "NY"
            ; "bedrooms", "3.0"
            ; "bathrooms", "2.0"
@@ -113,12 +149,12 @@ let%expect_test "house_rec" =
   in
   let houseaddy = House.address testhouse in
   print_s [%sexp (houseaddy : string)];
-  [%expect {| "NYC, NY" |}];
+  [%expect {| "New York City, NY" |}];
   let housespecs = House.specs testhouse in
   print_s [%sexp (housespecs : string)];
   [%expect {| "3.0 bed, 2.0 bath" |}];
   let houseprice = House.string_price testhouse in
   print_s [%sexp (houseprice : string)];
-  [%expect {| $1000000 |}];
+  [%expect {| $1,000,000 |}];
   Deferred.return ()
 ;;
