@@ -1,0 +1,14 @@
+(executables
+ (names main)
+ (libraries
+  async_js
+  polling_state_rpc
+  async_kernel
+  bonsai.web
+  core
+  tic_tac_toe_2023_common
+  tic_tac_toe_2023_lib
+  bonsai.web_ui_url_var)
+ (modes js)
+ (preprocess
+  (pps ppx_jane ppx_pattern_bind)))

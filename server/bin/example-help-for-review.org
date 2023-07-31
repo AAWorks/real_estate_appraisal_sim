@@ -1,0 +1,78 @@
+* example.exe
+
+: Genric bot-running command
+: 
+:   example.exe SUBCOMMAND
+: 
+: === subcommands ===
+: 
+:   create-game-and-play       . Send off an rpc to create and game and then plays
+:                                the game, waiting for the other player to place
+:                                pieces
+:   create-game-and-play-against-self
+:                              . Send off an rpc to create and join a game and
+:                                then randomly places pieces using web socket rpc
+:   join-game-and-play         . Send off an rpc to create and join a game and
+:                                then randomly places pieces using web socket rpc
+:   version                    . print version information
+:   help                       . explain a given subcommand (perhaps recursively)
+
+** version
+
+: print version information
+: 
+:   example.exe version 
+: 
+: === flags ===
+: 
+:   [-build-info]              . print build info for this build
+:   [-version]                 . print the version of this build
+:   [-help], -?                . print this help text and exit
+
+** create-game-and-play
+
+: Send off an rpc to create and game and then plays the game, waiting for the other player to place pieces
+: 
+:   example.exe create-game-and-play 
+: 
+: === flags ===
+: 
+:   -game-kind Tic_tac_toe     . | Omok - Difficulty of
+:   -host The                  . host to connect to
+:   -username STRING           . - your username, who to play as.
+:   [-against-bot Easy]        . | Medium | Hard - Difficulty of the server to
+:                                play against. If unset will leave game open for
+:                                someone else to join.
+:   [-port port]               . on which to serve
+:   [-refresh-rate How]        . often to poll for new game state
+:   [-help], -?                . print this help text and exit
+
+** create-game-and-play-against-self
+
+: Send off an rpc to create and join a game and then randomly places pieces using web socket rpc
+: 
+:   example.exe create-game-and-play-against-self 
+: 
+: === flags ===
+: 
+:   -game-kind Tic_tac_toe     . | Omok - Difficulty of
+:   -host The                  . host to connect to
+:   -username STRING           . - your username, who to play as.
+:   [-port port]               . on which to serve
+:   [-refresh-rate How]        . often to poll for new game state
+:   [-help], -?                . print this help text and exit
+
+** join-game-and-play
+
+: Send off an rpc to create and join a game and then randomly places pieces using web socket rpc
+: 
+:   example.exe join-game-and-play 
+: 
+: === flags ===
+: 
+:   -game-id INT               . - Game ID to join.
+:   -host The                  . host to connect to
+:   -username STRING           . - your username, who to play as.
+:   [-port port]               . on which to serve
+:   [-refresh-rate How]        . often to poll for new game state
+:   [-help], -?                . print this help text and exit

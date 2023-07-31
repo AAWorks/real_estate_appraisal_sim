@@ -1,0 +1,13 @@
+* send_mock_rpc.exe
+
+: Send off an rpc to create and join a game and then randomly places pieces using web socket rpc
+: 
+:   send_mock_rpc.exe 
+: 
+: === flags ===
+: 
+:   -host The                  . host to connect to
+:   [-port port]               . on which to serve
+:   [-build-info]              . print info about this build and exit
+:   [-version]                 . print the version of this build and exit
+:   [-help], -?                . print this help text and exit

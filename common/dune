@@ -1,0 +1,5 @@
+(library
+ (name tic_tac_toe_2023_common)
+ (preprocess
+  (pps ppx_jane))
+ (libraries async_kernel async_rpc_kernel core))

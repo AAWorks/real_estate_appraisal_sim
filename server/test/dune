@@ -1,0 +1,6 @@
+(library
+ (name jsip_tic_tac_toe_test)
+ (inline_tests)
+ (preprocess
+  (pps ppx_jane))
+ (libraries core tic_tac_toe_2023_native tic_tac_toe_2023_common))

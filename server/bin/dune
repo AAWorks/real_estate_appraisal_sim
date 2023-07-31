@@ -1,0 +1,5 @@
+(executables
+ (names main)
+ (preprocess
+  (pps ppx_jane))
+ (libraries async core tic_tac_toe_2023_native core_unix.command_unix))
