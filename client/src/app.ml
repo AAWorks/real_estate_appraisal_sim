@@ -7,7 +7,7 @@ let component ~url ~set_url:_ =
   let%arr url = url in
   Vdom.Node.div
     ~attrs:[ Style.foo ]
-    [ Vdom.Node.text "Hello world!"
+    [ Vdom.Node.text "Property Prodigy"
     ; Vdom.Node.sexp_for_debugging [%message (url : Page.t)]
     ]
 ;;

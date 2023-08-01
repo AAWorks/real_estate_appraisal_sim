@@ -1,0 +1,22 @@
+@mixin theme($theme: #F1E3D3)
+    background: $theme
+    color: #000000
+    font-family: "Papyrus", fantasy
+    font-weight: bold
+
+@mixin mainbutton()
+    transition: all .5s ease
+    color: #000000
+    border: 3px solid black
+    text-transform: uppercase
+    text-align: center
+    line-height: 1
+    font-size: 17px
+    background-color : transparent
+    padding: 10px
+    outline: none
+    border-radius: 4px
+
+@mixin mainbuttonhover()
+    color: #F1E3D3
+    background-color: #000000
