@@ -11,9 +11,8 @@ Get Dependencies | ```$``` ```make deps``` <br><br>
 Build Executable | ```$``` ```make build ``` <br><br>
 Run Executable | ```$``` ```make run``` <br>
 
-## Collaborators
-Alejandro Alonso ([AAWorks](https://github.com/AAWorks)) <br>
-Khalid Omer ([Komer301](https://github.com/Komer301))
+## Collaborators |  [![AAWorks](https://img.shields.io/static/v1?label=&message=AAWorks&color=purple&style=flat&logo=&logoColor=white)](https://github.com/AAWorks) [![Komer301](https://img.shields.io/static/v1?label=&message=Komer301&color=orange&style=flat&logo=&logoColor=white)](https://github.com/Komer301)
+Alejandro Alonso & Khalid Omer 
 
 ## Mentions
 <i>Hao Lian </i>| Jane Street
