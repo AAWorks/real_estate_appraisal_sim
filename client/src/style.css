@@ -10,6 +10,9 @@ body {
   font-weight: bold
 }
 
+.foo {
+  background-color: red;
+}
 .button {
   transition: all .5s ease;
   color: #000000;
