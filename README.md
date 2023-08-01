@@ -15,3 +15,6 @@ Get Dependencies | ```$``` ```make deps``` <br><br>
 Build Executable | ```$``` ```make build ``` <br><br>
 Run Executable | ```$``` ```make run``` <br><br>
 
+---
+## Mentions
+Hao Lian, <i>Jane Street</i>
