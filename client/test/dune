@@ -1,5 +1,6 @@
 (library
  (name tic_tac_toe_2023_test)
+ (inline_tests)
  (libraries
   async_kernel
   tic_tac_toe_2023_lib

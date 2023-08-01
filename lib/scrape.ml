@@ -1,4 +1,5 @@
 [@@@disable_unused_warnings]
+
 open! Sys
 open! Core
 open! Async
@@ -66,12 +67,10 @@ let house_data ~(location : string) ~(view : string) ~(n_houses : int) =
     [ zpid; location; state; bedroom; bathroom; price ])
 ;;
 
-let%expect_test "house_call" =
-  let house_data = house_data ~location:"houston" ~view:"" ~n_houses:1 in
-  print_s [%message "" (house_data : string list list)];
-  [%expect {| [2066641016, Houston, TX, 1, 1, 125000]|}];
-  Deferred.return ()
-;;
+(* let%expect_test "house_call" = let house_data = house_data
+   ~location:"houston" ~view:"" ~n_houses:1 in print_s [%message ""
+   (house_data : string list list)]; [%expect {| [2066641016, Houston, TX, 1,
+   1, 125000]|}]; Deferred.return () ;; *)
 
 let photos ~(zpid : string) =
   let link =

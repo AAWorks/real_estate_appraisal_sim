@@ -36,6 +36,7 @@ let main ~js_file ~port =
         (Asset.What_to_serve.file ~path:sourcemap_file)
     in
     let http_handler () =
+      Core.print_s [%message "handling..."];
       Single_page_handler.create_handler
         (Single_page_handler.default_with_body_div ~div_id:"app")
         ~assets:[ javascript; sourcemap ]

@@ -12,7 +12,9 @@
   bonsai.web_ui_url_var
   core
   ppx_css
-  tic_tac_toe_2023_common)
+  tic_tac_toe_2023_common
+  ;;real_estate_appraisal_sim
+  )
  (preprocess
   (pps ppx_css ppx_jane ppx_typed_fields bonsai.ppx_bonsai)))
 
@@ -21,3 +23,9 @@
  (deps style.css)
  (action
   (bash "%{bin:css_inliner} %{deps} \"((rewrite ()))\"")))
+
+(rule
+ (targets embedded_files.ml embedded_files.mli)
+ (deps %{bin:ocaml-embed-file} %{workspace_root}/resources/house_data.txt)
+ (action
+  (bash "%{deps} -output embedded_files")))
