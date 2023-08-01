@@ -37,6 +37,7 @@ button:hover {
 }
 
 input {
+  width: 200px;
   transition: all .5s ease;
   color: rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -45,7 +46,7 @@ input {
   line-height: 1;
   font-size: 17px;
   background-color: transparent;
-  padding: 10px;
+  padding: 9px;
   outline: none;
   border-radius: 4px
 }
