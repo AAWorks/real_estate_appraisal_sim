@@ -12,4 +12,4 @@
   postgres_async)
  (inline_tests)
  (preprocess
-  (pps ppx_jane ppx_jsonaf_conv)))
+  (pps ppx_jane ppx_jsonaf_conv ppx_sexp_conv)))
