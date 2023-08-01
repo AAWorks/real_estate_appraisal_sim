@@ -1,4 +1,6 @@
-* {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
 
@@ -17,10 +19,12 @@ body {
 .help {
   display: flexbox;
 }
-.button {
+
+button {
+  width: 200px;
   transition: all .5s ease;
-  color: #000000;
-  border: 3px solid black;
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   text-transform: uppercase;
   text-align: center;
   line-height: 1;
@@ -33,12 +37,35 @@ body {
   align-items: center;
 }
 
-.button:hover {
+button:hover {
   color: #F1E3D3;
+<<<<<<< HEAD
   background-color: #000000
 }
 
 .test {
   color:red;
   background-color: blue;
+=======
+  background-color: rgba(0, 0, 0, 0.3)
+}
+
+input {
+  width: 200px;
+  transition: all .5s ease;
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+  font-size: 17px;
+  background-color: transparent;
+  padding: 9px;
+  outline: none;
+  border-radius: 4px
+}
+
+input:focus {
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.1);
+>>>>>>> 260cd24c02ec8cad8a2f19621429d30ff4643108
 }
