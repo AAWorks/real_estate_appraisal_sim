@@ -17,4 +17,4 @@ Run Executable | ```$``` ```make run``` <br><br>
 
 ---
 ## Mentions
-Hao Lian, <i>Jane Street</i>
+<i>Hao Lian </i>
