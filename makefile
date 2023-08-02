@@ -1,5 +1,7 @@
 deps:
-	opam install . --deps-only --locked
+	opam update
+	opam install postgres_async
+	opam install ppx_jsonaf_conv 
 build:
 	dune build
 run_base:
