@@ -15,16 +15,26 @@ body {
 .title {
   text-align: center;
   font-weight: bolder;
-}
-.help {
-  display: flexbox;
+  margin-top:5vh;
 }
 
-button {
+.second_title {
+  text-align: center;
+  font-weight: bolder;
+}
+.help {
+  display: flex;
+  height: 60vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
   width: 200px;
   transition: all .5s ease;
   color: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.731);
   text-transform: uppercase;
   text-align: center;
   line-height: 1;
@@ -35,22 +45,22 @@ button {
   border-radius: 4px;
   flex-direction: column;
   align-items: center;
+  margin: 10px;
 }
 
-button:hover {
+.button:hover {
   color: #F1E3D3;
-<<<<<<< HEAD
   background-color: #000000
 }
-
+.foo {
+  color:red;
+}
 .test {
   color:red;
-  background-color: blue;
-=======
   background-color: rgba(0, 0, 0, 0.3)
 }
 
-input {
+.input {
   width: 200px;
   transition: all .5s ease;
   color: rgba(0, 0, 0, 0.5);
@@ -65,7 +75,6 @@ input {
   border-radius: 4px
 }
 
-input:focus {
+.input:focus {
   box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.1);
->>>>>>> 260cd24c02ec8cad8a2f19621429d30ff4643108
 }

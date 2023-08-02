@@ -1,15 +1,6 @@
 (library
  (name real_estate_appraisal_sim)
- (libraries
-  core
-  cohttp
-  lwt
-  curl
-  cohttp-lwt-unix
-  lambdasoup
-  async
-  jsonaf
-  postgres_async)
+ (libraries core cohttp lwt curl cohttp-lwt-unix lambdasoup async jsonaf)
  (inline_tests)
  (preprocess
   (pps ppx_jane ppx_jsonaf_conv)))

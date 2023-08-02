@@ -2,41 +2,71 @@ open! Core
 open! Bonsai_web
 open! Tic_tac_toe_2023_common
 open Bonsai.Let_syntax
-open Emb_questionbank
+open! Emb_questionbank
 module Form = Bonsai_web_ui_form
 
-(* let houses = Questionbank.questions_as_records;; *)
-(* List of House.t *)
-
-(* let houses = Embedded_files.house_data_dot_txt |> [%sexp_of: StoHouse.t
-
-   list] *)
-
-let houses = questions_as_records ()
-
-let find_house : int -> House.t =
-  fun i -> List.nth_exn houses (i % List.length houses)
+let find_house (id : int) houses : House.t =
+  List.nth_exn houses (id % List.length houses)
 ;;
 
-let component ~id ~set_url =
+let _state_based_counter length =
+  let%sub state, set_state = Bonsai.state 0 in
+  let%arr state = state
+  and set_state = set_state in
+  let decrement =
+    Vdom.Node.button
+      ~attrs:
+        [ Vdom.Attr.on_click (fun _ ->
+            if not (Int.equal state 0)
+            then set_state (state - 1)
+            else set_state state)
+        ]
+      [ Vdom.Node.text "<-" ]
+  in
+  let increment =
+    Vdom.Node.button
+      ~attrs:
+        [ Vdom.Attr.on_click (fun _ ->
+            if not (Int.equal state length)
+            then set_state (state + 1)
+            else set_state state)
+        ]
+      [ Vdom.Node.text "->" ]
+  in
+  increment, decrement
+;;
+
+let component ~id ~set_url ~(houses : QuestionBank.t Value.t) =
   Bonsai.scope_model (module Int) ~on:id
   @@
   let%sub guess, set_guess = Bonsai.state None in
   let%sub rendered_house =
-    let%arr id = id in
-    Vdom.Node.sexp_for_debugging [%sexp (find_house id : House.t)]
+    let%arr id = id
+    and houses = houses in
+    let selected_house = find_house id houses in
+    let images = Emb_questionbank.House.images selected_house in
+    Vdom.Node.sexp_for_debugging [%sexp (images : string list)]
   in
+  (* let%sub carosel_buttons =
+    let%arr id = id
+    and houses = houses in
+    let selected_house = find_house id houses in
+    let images = Emb_questionbank.House.images selected_house in
+    let total_images = List.length images in
+    Vdom.Node.view_as_vdom (state_based_counter total_images)
+  in *)
+  (* Vdom.Node.sexp_for_debugging [%sexp (find_house id houses : House.t)] *)
   let%sub guess_screen =
     match%sub guess with
     | None ->
-      (* Text box*)
       let%sub textbox = Form.Elements.Textbox.int () in
       let%sub sleep = Bonsai.Clock.sleep in
-      let%arr textbox = textbox >>| Form.label "testing textbox"
+      let%arr textbox = textbox
       and set_guess = set_guess
       and id = id
       and sleep = sleep in
       Vdom.Node.div
+        ~attrs:[ Style.input; Vdom.Attr.placeholder "PRICE" ]
         [ Form.view_as_vdom
             ~on_submit:
               (Form.Submit.create
@@ -74,7 +104,7 @@ let component ~id ~set_url =
   and rendered_house = rendered_house in
   Vdom.Node.div
     [ Vdom.Node.h1
-        ~attrs:[ Style.title ]
+        ~attrs:[ Style.second_title ]
         [ Vdom.Node.text "Property Prodigy" ]
     ; rendered_house
     ; Vdom.Node.button
