@@ -6,4 +6,5 @@
   cohttp_static_handler
   async_rpc_websocket
   tic_tac_toe_2023_common
-  core_unix.filename_unix))
+  core_unix.filename_unix
+  postgres_async))
