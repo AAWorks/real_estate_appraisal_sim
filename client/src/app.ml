@@ -37,4 +37,3 @@ let component ~url ~set_url =
     let%sub () = Bonsai.Edge.lifecycle ~on_activate:reset () in
     return out
 ;;
-
