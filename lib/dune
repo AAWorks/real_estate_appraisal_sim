@@ -3,9 +3,6 @@
  (libraries
   core
   cohttp
-  lwt
-  curl
-  cohttp-lwt-unix
   lambdasoup
   async
   jsonaf
