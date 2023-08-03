@@ -19,7 +19,7 @@ let initialize_connection
 ;;
 
 let main ~js_file ~port =
-  let global_state = State.create ~world_state:World_state.empty in
+  let _global_state = State.create ~world_state:World_state.empty in
   let%bind server =
     let open Cohttp_static_handler in
     let javascript =
@@ -48,7 +48,7 @@ let main ~js_file ~port =
       ~mode:`TCP
       ~where_to_listen:(Tcp.Where_to_listen.of_port port)
       ~http_handler
-      ~implementations:(Rpc_implementations.implementations ~global_state)
+      ~implementations:(Rpc_implementations.implementations ())
       ~initial_connection_state:initialize_connection
       ()
   in

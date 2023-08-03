@@ -24,6 +24,8 @@ let first_n_rows ~n ~filename =
 
 let write_row ~row ~filename =
   let%bind rows = read_rows ~filename in
-  let rowsexps = List.map (rows @ row) ~f:(fun irow -> Row.sexp_of_t irow) in
+  let rowsexps =
+    List.map (rows @ [ row ]) ~f:(fun irow -> Row.sexp_of_t irow)
+  in
   Writer.save_sexps "resources/leaderboard.txt" rowsexps
 ;;
