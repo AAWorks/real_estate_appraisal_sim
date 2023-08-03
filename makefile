@@ -1,6 +1,6 @@
 deps:
 	opam update
-	opam install . --deps-only --with-test --yes
+	opam upgrade
 	opam install core
 	opam install core_unix
 	opam install bonsai
