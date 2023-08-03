@@ -1,14 +1,9 @@
 deps:
+	opam repo add janestreet-bleeding https://ocaml.janestreet.com/opam-repository
+	opam repo add janestreet-bleeding-external https://github.com/janestreet/opam-repository.git#external-packages
 	opam update
 	opam upgrade
-	opam install core
-	opam install core_unix
-	opam install bonsai
-	opam install ppx_jane
-	opam install ppx_css
-	opam install core_unix
-	opam install postgres_async
-	opam install ppx_jsonaf_conv
+	opam install -y core core_unix bonsai ppx_jane ppx_css core_unix postgres_async ppx_jsonaf_conv cohttp-lwt-unix cohttp_static_handler
 build:
 	dune build
 run_base:
