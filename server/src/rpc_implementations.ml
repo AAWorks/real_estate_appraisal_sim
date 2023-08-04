@@ -4,17 +4,15 @@ open! Async
 open! Tic_tac_toe_2023_common
 open! Protocol
 
-let info = Log.Global.info "%s"
-
-let get_rows ~n : int -> Row.t =
-  Rpc.Rpc.implement
-    Get_rows.rpc
-    (fun (user_state : User_state.t) (n : int) ->
+let get_rows () =
+  Rpc.Rpc.implement Get_rows.rpc (fun _ (n : int) ->
     first_n_rows ~n ~filename:"resources/leaderboard.txt")
 ;;
 
-let add_entry ~username ~score =
-  Rpc.Rpc.implement Add_entry.rpc (fun (user_state : User_state.t) ->
+let add_entry () =
+  Rpc.Rpc.implement
+    Add_entry.rpc
+    (fun _ ((username, score) : string * int) ->
     write_row
       ~row:{ Row.username; score }
       ~filename:"resources/leaderboard.txt")
@@ -22,6 +20,6 @@ let add_entry ~username ~score =
 
 let implementations () =
   Rpc.Implementations.create_exn
-    ~implementations:[ get_rows ~n; add_entry ~username ~score ]
+    ~implementations:[ get_rows (); add_entry () ]
     ~on_unknown_rpc:`Continue
 ;;

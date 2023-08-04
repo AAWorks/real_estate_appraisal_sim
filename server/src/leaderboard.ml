@@ -1,6 +1,5 @@
 open! Core
 open! Async
-open! Leaderboard
 open! Async_rpc_kernel
 
 module Row = struct
@@ -8,7 +7,7 @@ module Row = struct
     { username : string
     ; score : int
     }
-  [@@deriving sexp, fields]
+  [@@deriving sexp, fields, bin_io]
 end
 
 let read_rows ~filename =
@@ -45,9 +44,9 @@ end
 module Get_rows = struct
   let rpc =
     Rpc.Rpc.create
-     ~name:"get-rows"
-     ~version:0
-     ~bin_query:[%bin_type_class: int]
-     ~bin_response:[%bin_type_class: Row.t list]
+      ~name:"get-rows"
+      ~version:0
+      ~bin_query:[%bin_type_class: int]
+      ~bin_response:[%bin_type_class: Row.t list]
   ;;
 end
