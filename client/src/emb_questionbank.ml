@@ -41,6 +41,8 @@ module House = struct
   ;;
 
   let specs t = t.bedrooms ^ " bed, " ^ t.bathrooms ^ " bath"
+  let bedrooms t = t.bedrooms
+  let bathrooms t = t.bathrooms
 
   let images t =
     List.map t.images ~f:(fun url ->
@@ -55,7 +57,7 @@ module QuestionBank = struct
   type t = House.t list
 
   let from_embedded ~embedded_file =
-    embedded_file |> Sexp.of_string_many |> List.map ~f:[%of_sexp: House.t ]
+    embedded_file |> Sexp.of_string_many |> List.map ~f:[%of_sexp: House.t]
   ;;
 
   let n_random_houses (t : House.t list) ~n_houses : t =
@@ -70,4 +72,14 @@ let questions_as_records () =
       ~embedded_file:Embedded_files.house_data_dot_txt
   in
   QuestionBank.n_random_houses questionbank ~n_houses:10
+;;
+
+let weighted_points ~actual ~guess ?(point_scale = 100.0) () =
+  let pct = guess // actual in
+  if Float.O.(pct > 1.0)
+  then
+    if Float.O.(pct > 2.0)
+    then 0
+    else Int.of_float ((1.0 -. pct +. 1.0) *. point_scale)
+  else Int.of_float (pct *. point_scale)
 ;;

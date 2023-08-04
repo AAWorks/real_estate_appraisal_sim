@@ -1,5 +1,10 @@
 open! Core
 
+module BetterString : sig
+  val title : string -> string
+  val to_price_string : int -> string
+end
+
 module House : sig
   type t [@@deriving sexp, equal]
 
@@ -9,6 +14,8 @@ module House : sig
   val specs : t -> string
   val images : t -> string list
   val images_as_string : t -> string
+  val bedrooms : t -> string
+  val bathrooms : t -> string
   val fields : string list
 end
 
@@ -20,3 +27,10 @@ module QuestionBank : sig
 end
 
 val questions_as_records : unit -> QuestionBank.t
+
+val weighted_points
+  :  actual:int
+  -> guess:int
+  -> ?point_scale:float
+  -> unit
+  -> int

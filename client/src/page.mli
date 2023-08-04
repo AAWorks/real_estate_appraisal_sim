@@ -6,6 +6,7 @@ open! Core
 type t =
   | Homepage
   | Game of int
+  | Leaderboard 
 [@@deriving sexp, equal]
 
 val parser : t Uri_parsing.Versioned_parser.t

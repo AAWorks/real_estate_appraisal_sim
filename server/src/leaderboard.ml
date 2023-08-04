@@ -1,14 +1,7 @@
 open! Core
 open! Async
 open! Async_rpc_kernel
-
-module Row = struct
-  type t =
-    { username : string
-    ; score : int
-    }
-  [@@deriving sexp, fields, bin_io]
-end
+open Tic_tac_toe_2023_common.Protocol
 
 let read_rows ~filename =
   let%bind reader = Reader.open_file filename in
@@ -30,23 +23,3 @@ let write_row ~row ~filename =
   in
   Writer.save_sexps "resources/leaderboard.txt" rowsexps
 ;;
-
-module Add_entry = struct
-  let rpc =
-    Rpc.Rpc.create
-      ~name:"add-entry"
-      ~version:0
-      ~bin_query:[%bin_type_class: string * int]
-      ~bin_response:[%bin_type_class: unit]
-  ;;
-end
-
-module Get_rows = struct
-  let rpc =
-    Rpc.Rpc.create
-      ~name:"get-rows"
-      ~version:0
-      ~bin_query:[%bin_type_class: int]
-      ~bin_response:[%bin_type_class: Row.t list]
-  ;;
-end

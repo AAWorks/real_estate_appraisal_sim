@@ -11,7 +11,11 @@ body {
   font-family: "Papyrus", fantasy;
   font-weight: bold
 }
-
+.big_body {
+  margin:auto;
+  max-width: 1080px;
+  align-items: center;
+}
 .title {
   text-align: center;
   font-weight: bolder;
@@ -29,7 +33,9 @@ body {
   align-items: center;
   justify-content: center;
 }
-
+.organize {
+  left: 50%;
+}
 .button {
   width: 200px;
   transition: all .5s ease;
@@ -52,15 +58,68 @@ body {
   color: #F1E3D3;
   background-color: #000000
 }
-.foo {
-  color:red;
-}
+
 .test {
   color:red;
   background-color: rgba(0, 0, 0, 0.3)
 }
 
-.input {
+.score_card {
+  width: 200px;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.731);
+}
+.house-card {
+  width: 240px;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.731);
+
+}
+
+.house_info {
+  margin-top: 10px;
+}
+
+.house_detail {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.detail_label {
+  font-size: 14px;
+  color: #838a8b;
+}
+
+.detail_value {
+  font-size: 16px;
+  font-weight: bold;
+}
+.current_score {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.score_line {
+  width: 200px;
+  height: 2px;
+  background-color: #333;
+  margin: 0 auto 5px;
+}
+.user_score {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+form input {
   width: 200px;
   transition: all .5s ease;
   color: rgba(0, 0, 0, 0.5);
@@ -72,9 +131,230 @@ body {
   background-color: transparent;
   padding: 9px;
   outline: none;
-  border-radius: 4px
+  border-radius: 4px;
+  
+}
+.input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+form button {
+  display: none;
+}
 .input:focus {
   box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.1);
+}
+
+.carousel {
+  display: grid;
+  place-items: center;
+  grid-template-columns: 20% 60% 20%;
+  height: 30vh;
+}
+.top_row {
+  display: grid;
+  place-items: center;
+  grid-template-columns: auto auto;
+  margin-bottom: 20px;
+}
+.image_buttons {
+  background-color: transparent;
+  border-color: transparent;
+  margin-top: 40px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+/* Right arrow */
+.arrow {
+  cursor: pointer;
+  height: 120px;
+  left: 50%;
+  position: relative;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  transition: transform 0.1s;
+  width: 80px;
+}
+
+.arrow_top,
+.arrow_bottom {
+  background-color: #666;
+  height: 4px;
+  left: -5px;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+}
+
+.arrow_top::after,
+.arrow_bottom::after {
+  background-color: #fff;
+  content: '';
+  height: 100%;
+  position: absolute;
+  top: 0;
+  transition: all 0.15s;
+}
+
+.arrow_top {
+  transform: rotate(45deg);
+  transform-origin: bottom right;
+}
+
+.arrow_top::after {
+  left: 100%;
+  right: 0;
+  transition-delay: 0s;
+}
+
+.arrow_bottom {
+  transform: rotate(-45deg);
+  transform-origin: top right;
+}
+
+.arrow_bottom::after {
+  left: 0;
+  right: 100%;
+  transition-delay: 0.15s;
+}
+
+.arrow:hover .arrow_top::after {
+  left: 0;
+  transition-delay: 0.15s;
+}
+
+.arrow:hover .arrow_bottom::after {
+  right: 0;
+  transition-delay: 0s;
+}
+
+.arrow:active {
+  transform: translateX(-50%) translateY(-50%) scale(0.9);
+}
+
+/* LEFT ARROW  */
+.arrow_left {
+  cursor: pointer;
+  height: 120px;
+  left: 50%;
+  position: relative;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%) rotate(180deg);
+  transition: transform 0.1s;
+  width: 80px;
+}
+
+.arrow_top_left,
+.arrow_bottom_left {
+  background-color: #666;
+  height: 4px;
+  left: -5px;
+  position: absolute;
+  top: 50%;
+  width: 100%;
+}
+
+.arrow_top_left::after,
+.arrow_bottom_left::after {
+  background-color: #fff;
+  content: '';
+  height: 100%;
+  position: absolute;
+  top: 0;
+  transition: all 0.15s;
+}
+
+.arrow_top_left {
+  transform: rotate(45deg);
+  transform-origin: bottom right;
+}
+
+.arrow_top_left::after {
+  left: 100%;
+  right: 0;
+  transition-delay: 0s;
+}
+
+.arrow_bottom_left {
+  transform: rotate(-45deg);
+  transform-origin: top right;
+}
+
+.arrow_bottom_left::after {
+  left: 0;
+  right: 100%;
+  transition-delay: 0.15s;
+}
+
+.arrow_left:hover .arrow_top_left::after {
+  left: 0;
+  transition-delay: 0.15s;
+}
+
+.arrow_left:hover .arrow_bottom_left::after {
+  right: 0;
+  transition-delay: 0s;
+}
+
+.arrow_left:active {
+  transform: translateX(-50%) translateY(-50%) scale(0.9) rotate(180deg);
+}
+
+
+.guessing_container {
+  width: 300px;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  display: grid;
+  place-items: center;
+  grid-template-columns: auto;
+}
+.outside {
+  display: flex;
+  justify-content: center;
+}
+
+.house_price,
+.user_guess {
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: 14px;
+  color: #666;
+}
+
+.value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.score_earned {
+  display: flex;
+  flex-direction: column;
+}
+
+.result {
+  font-size: 14px;
+  color: #666;
+}
+
+.score-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #00aaff;
+  /* color: #F1E3D3; */
 }

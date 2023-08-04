@@ -6,8 +6,11 @@ open! Emb_questionbank
 
 let get_houses () = questions_as_records ()
 
+(* let rows = RPC CALL HERE *)
+
 let component ~url ~set_url =
   match%sub url with
+  | Page.Leaderboard -> Leaderboard_ui.component ~url ~set_url
   | Page.Homepage ->
     Bonsai.const
     @@ Vdom.Node.div
@@ -26,7 +29,7 @@ let component ~url ~set_url =
              ; Vdom.Node.button
                  ~attrs:
                    [ Style.button
-                   ; Vdom.Attr.on_click (fun _ -> set_url (Page.Game 2))
+                   ; Vdom.Attr.on_click (fun _ -> set_url Page.Leaderboard)
                    ]
                  [ Vdom.Node.text "Leaderboard" ]
              ]
@@ -35,7 +38,8 @@ let component ~url ~set_url =
     let%sub house_state, set_houses = Bonsai.state (get_houses ()) in
     let%sub out, reset =
       Bonsai.with_model_resetter
-        (Game.component ~id ~set_url ~houses:house_state)
+        (let%sub score, set_score = Bonsai.state 0 in
+         Game.component ~id ~set_url ~houses:house_state ~score ~set_score)
     in
     (* Put houses in compoent *)
     let%sub () = Bonsai.Edge.lifecycle ~on_activate:reset () in
@@ -48,3 +52,6 @@ let component ~url ~set_url =
     in
     return out
 ;;
+(* | Leaderboard -> Leaderboard_ui.component ~rows *)
+
+(* | Leaderboard -> Leaderboard_ui.component () *)

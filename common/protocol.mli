@@ -231,3 +231,19 @@ end
 module Me : sig
   val rpc : (unit, Username.t) Rpc.Rpc.t
 end
+
+module Row : sig
+  type t =
+    { username : string
+    ; score : int
+    }
+  [@@deriving sexp, fields]
+end
+
+module Add_entry : sig
+  val rpc : (string * int, unit) Async_rpc_kernel.Rpc.Rpc.t
+end
+
+module Get_rows : sig
+  val rpc : (int, Row.t list) Async_rpc_kernel.Rpc.Rpc.t
+end
