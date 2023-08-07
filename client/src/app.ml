@@ -52,6 +52,3 @@ let component ~url ~set_url =
     in
     return out
 ;;
-(* | Leaderboard -> Leaderboard_ui.component ~rows *)
-
-(* | Leaderboard -> Leaderboard_ui.component () *)

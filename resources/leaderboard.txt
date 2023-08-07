@@ -7,4 +7,6 @@
 ((username QuantTainted) (score 400))
 ((username Monef) (score 300))
 ((username IssRider) (score 200))
-((username raeosol) (score 100))
+((username jane) (score 23))
+((username raeosol) (score 0))
+((username testing) (score 0))

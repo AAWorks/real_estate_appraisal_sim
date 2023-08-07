@@ -127,172 +127,241 @@ let component
   =
   Bonsai.scope_model (module Int) ~on:id
   @@
-  let%sub guess, set_guess = Bonsai.state None in
-  let%sub photo_carousel =
-    let%sub images =
-      let%arr id = id
-      and houses = houses in
-      let selected_house = find_house id houses in
-      Emb_questionbank.House.images selected_house
-    in
-    image_carousel images
-  in
-  (* Vdom.Node.sexp_for_debugging [%sexp (find_house id houses : House.t)] *)
-  let%sub guess_screen =
-    match%sub guess with
-    | None ->
-      let%sub textbox = Form.Elements.Textbox.int ~placeholder:"PRICE" () in
+  let%sub playing_game =
+    match%sub id with
+    | 11 ->
+      let%sub username_textbox =
+        Form.Elements.Textbox.string ~placeholder:"Username" ()
+      in
+      (* let%sub username, set_username = Bonsai.state "" in *)
       let%sub sleep = Bonsai.Clock.sleep in
-      let%sub int_house_price =
-        let%sub selected_house =
-          let%arr id = id
-          and houses = houses in
-          find_house id houses
+      let%sub send_score =
+        let%sub send =
+          Rpc_effect.Rpc.dispatcher
+            Protocol.Add_entry.rpc
+            ~where_to_connect:Self
         in
-        let%arr selected_house = selected_house in
-        Emb_questionbank.House.int_price selected_house
+        let%arr send = send in
+        fun x -> Effect.ignore_m (send x)
       in
-      let%sub theme =
-        let%sub theme = View.Theme.current in
-        let%arr theme = theme in
-        View.Expert.override_theme theme ~f:(fun (module S) ->
-          (module struct
-            class c =
-              object
-                inherit S.c
-              end
-          end))
-      in
-      View.Theme.set_for_computation theme
-      @@
-      let%arr textbox = textbox
-      and set_guess = set_guess
-      and score = score
-      and set_score = set_score
-      and id = id
+      let%arr score = score
+      and username_textbox = username_textbox
       and sleep = sleep
-      and int_house_price = int_house_price in
+      and send_score = send_score in
       Vdom.Node.div
-        ~attrs:[ Style.input ]
-        [ (Form.view_as_vdom
-             ~on_submit:
-               (Form.Submit.create
-                  ~handle_enter:true
-                  ~f:(fun guess ->
-                    let%bind.Effect () = set_guess (Some guess) in
-                    let%bind.Effect () =
-                      set_score
-                        (score
-                         + Emb_questionbank.weighted_points
-                             ~actual:int_house_price
-                             ~guess
-                             ())
-                    in
-                    let%bind.Effect () = sleep (Time_ns.Span.of_sec 3.0) in
-                    set_url (Page.Game (id + 1)))
-                  ())
-             textbox
-           |> fun x ->
-           let attr = Vdom.Attr.create "autocomplete" "off" in
-           match x with
-           | Vdom.Node.Element element ->
-             Vdom.Node.Element
-               (Vdom.Node.Element.map_attrs element ~f:(fun a ->
-                  Vdom.Attr.combine a attr))
-           | x -> Vdom.Node.span ~attrs:[ attr ] [ x ])
-        ]
-    | Some guess ->
-      let%sub string_house_price =
-        let%sub selected_house =
-          let%arr id = id
-          and houses = houses in
-          find_house id houses
-        in
-        let%arr selected_house = selected_house in
-        Emb_questionbank.House.string_price selected_house
-      in
-      let%sub int_house_price =
-        let%sub selected_house =
-          let%arr id = id
-          and houses = houses in
-          find_house id houses
-        in
-        let%arr selected_house = selected_house in
-        Emb_questionbank.House.int_price selected_house
-      in
-      let%sub awarded_points =
-        let%arr house_price = int_house_price
-        and guess = guess in
-        Emb_questionbank.weighted_points ~actual:house_price ~guess ()
-      in
-      let%arr guess = guess
-      and _score = score
-      and _set_score = set_score
-      and house_price = string_house_price
-      and awarded_points = awarded_points in
-      Vdom.Node.div
-        ~attrs:[ Style.outside ]
-        [ Vdom.Node.div
-            ~attrs:[ Style.guessing_container ]
-            [ Vdom.Node.div
-                ~attrs:[ Style.house_price ]
-                [ Vdom.Node.div
-                    ~attrs:[ Style.label ]
-                    [ Vdom.Node.text "Actual Price:" ]
-                ; Vdom.Node.div
-                    ~attrs:[ Style.value ]
-                    [ Vdom.Node.text house_price ]
-                ]
+        [ (* [ Vdom.Node.button ~attrs: [ Style.button ; Vdom.Attr.on_click
+             (fun _ -> set_url Page.Homepage) ] [ Vdom.Node.text "HOME" ] *)
+          Vdom.Node.div
+            ~attrs:[ Style.game_over; Style.big_body ]
+            [ (* Vdom.Node.button ~attrs: [ Style.button ; Vdom.Attr.on_click
+                 (fun _ -> set_url Page.Homepage) ] [ Vdom.Node.text "Home"
+                 ] *)
+              Vdom.Node.h1
+                ~attrs:[ Style.second_title ]
+                [ Vdom.Node.text "Property Prodigy" ]
             ; Vdom.Node.div
-                ~attrs:[ Style.user_guess ]
-                [ Vdom.Node.div
-                    ~attrs:[ Style.label ]
-                    [ Vdom.Node.text "Your Guess:" ]
+                ~attrs:[ Style.final_score ]
+                [ Vdom.Node.text "Final Score"
                 ; Vdom.Node.div
-                    ~attrs:[ Style.value ]
-                    [ Vdom.Node.text (BetterString.to_price_string guess) ]
-                ]
-            ; Vdom.Node.div
-                [ Vdom.Node.div
-                    ~attrs:[ Style.result ]
-                    [ Vdom.Node.text "Score Earned:" ]
-                ; Vdom.Node.div
-                    ~attrs:[ Style.score_value ]
-                    [ Vdom.Node.text ("+" ^ Int.to_string awarded_points) ]
-                ]
-            ]
-        ]
-  in
-  let%sub house_data = house_data_card ~id houses in
-  let%arr guess_screen = guess_screen
-  and photo_carousel = photo_carousel
-  and house_data = house_data
-  and score = score in
-  Vdom.Node.div
-    ~attrs:[ Style.big_body ]
-    [ Vdom.Node.h1
-        ~attrs:[ Style.second_title ]
-        [ Vdom.Node.text "Property Prodigy" ]
-      (* ; Vdom.Node.button ~attrs: [ Style.button ; Vdom.Attr.on_click (fun
-         _ -> set_url Page.Homepage) ] [ Vdom.Node.text "Go to homepage" ] *)
-    ; Vdom.Node.div
-        (* ~attrs:[ Style.organize ] *)
-        [ Vdom.Node.div
-            ~attrs:[ Style.top_row ]
-            [ Vdom.Node.div
-                ~attrs:[ Style.score_card ]
-                [ Vdom.Node.div
-                    ~attrs:[ Style.current_score ]
-                    [ Vdom.Node.text "Current Score" ]
-                  (* ; Vdom.Node.div ~attrs:[ Style.score_line ] [] *)
-                ; Vdom.Node.div
-                    ~attrs:[ Style.user_score ]
+                    ~attrs:
+                      [ Style.score_value
+                      ; Vdom.Attr.create "font-size" "40px"
+                      ]
                     [ Vdom.Node.text (Int.to_string score) ]
                 ]
-            ; house_data
+            ; Vdom.Node.div
+                ~attrs:[ Style.input ]
+                [ Form.view_as_vdom
+                    ~on_submit:
+                      (Form.Submit.create
+                         ~handle_enter:true
+                         ~f:(fun username -> send_score (username, score))
+                         ())
+                    username_textbox
+                ]
+            ; Vdom.Node.button
+                ~attrs:
+                  [ Style.save_button
+                  ; Vdom.Attr.on_click (fun _ ->
+                      let%bind.Effect () = sleep (Time_ns.Span.of_sec 1.5) in
+                      Effect.return ())
+                  ]
+                [ Vdom.Node.text "Save Score" ]
             ]
-        ; photo_carousel
-        ; guess_screen
         ]
-    ]
+    | _ ->
+      let%sub guess, set_guess = Bonsai.state None in
+      let%sub photo_carousel =
+        let%sub images =
+          let%arr id = id
+          and houses = houses in
+          let selected_house = find_house id houses in
+          Emb_questionbank.House.images selected_house
+        in
+        image_carousel images
+      in
+      let%sub guess_screen =
+        match%sub guess with
+        | None ->
+          let%sub textbox =
+            Form.Elements.Textbox.int ~placeholder:"PRICE" ()
+          in
+          let%sub sleep = Bonsai.Clock.sleep in
+          let%sub int_house_price =
+            let%sub selected_house =
+              let%arr id = id
+              and houses = houses in
+              find_house id houses
+            in
+            let%arr selected_house = selected_house in
+            Emb_questionbank.House.int_price selected_house
+          in
+          let%sub theme =
+            let%sub theme = View.Theme.current in
+            let%arr theme = theme in
+            View.Expert.override_theme theme ~f:(fun (module S) ->
+              (module struct
+                class c =
+                  object
+                    inherit S.c
+                  end
+              end))
+          in
+          View.Theme.set_for_computation theme
+          @@
+          let%arr textbox = textbox
+          and set_guess = set_guess
+          and score = score
+          and set_score = set_score
+          and id = id
+          and sleep = sleep
+          and int_house_price = int_house_price in
+          Vdom.Node.div
+            ~attrs:[ Style.input ]
+            [ (Form.view_as_vdom
+                 ~on_submit:
+                   (Form.Submit.create
+                      ~handle_enter:true
+                      ~f:(fun guess ->
+                        let%bind.Effect () = set_guess (Some guess) in
+                        let%bind.Effect () =
+                          set_score
+                            (score
+                             + Emb_questionbank.weighted_points
+                                 ~actual:int_house_price
+                                 ~guess
+                                 ())
+                        in
+                        let%bind.Effect () =
+                          sleep (Time_ns.Span.of_sec 3.0)
+                        in
+                        set_url (Page.Game (id + 1)))
+                      ())
+                 textbox
+               |> fun x ->
+               let attr = Vdom.Attr.create "autocomplete" "off" in
+               match x with
+               | Vdom.Node.Element element ->
+                 Vdom.Node.Element
+                   (Vdom.Node.Element.map_attrs element ~f:(fun a ->
+                      Vdom.Attr.combine a attr))
+               | x -> Vdom.Node.span ~attrs:[ attr ] [ x ])
+            ]
+        | Some guess ->
+          let%sub string_house_price =
+            let%sub selected_house =
+              let%arr id = id
+              and houses = houses in
+              find_house id houses
+            in
+            let%arr selected_house = selected_house in
+            Emb_questionbank.House.string_price selected_house
+          in
+          let%sub int_house_price =
+            let%sub selected_house =
+              let%arr id = id
+              and houses = houses in
+              find_house id houses
+            in
+            let%arr selected_house = selected_house in
+            Emb_questionbank.House.int_price selected_house
+          in
+          let%sub awarded_points =
+            let%arr house_price = int_house_price
+            and guess = guess in
+            Emb_questionbank.weighted_points ~actual:house_price ~guess ()
+          in
+          let%arr guess = guess
+          and house_price = string_house_price
+          and awarded_points = awarded_points in
+          Vdom.Node.div
+            ~attrs:[ Style.outside ]
+            [ Vdom.Node.div
+                ~attrs:[ Style.guessing_container ]
+                [ Vdom.Node.div
+                    ~attrs:[ Style.house_price ]
+                    [ Vdom.Node.div
+                        ~attrs:[ Style.label ]
+                        [ Vdom.Node.text "Actual Price:" ]
+                    ; Vdom.Node.div
+                        ~attrs:[ Style.value ]
+                        [ Vdom.Node.text house_price ]
+                    ]
+                ; Vdom.Node.div
+                    ~attrs:[ Style.user_guess ]
+                    [ Vdom.Node.div
+                        ~attrs:[ Style.label ]
+                        [ Vdom.Node.text "Your Guess:" ]
+                    ; Vdom.Node.div
+                        ~attrs:[ Style.value ]
+                        [ Vdom.Node.text (BetterString.to_price_string guess)
+                        ]
+                    ]
+                ; Vdom.Node.div
+                    [ Vdom.Node.div
+                        ~attrs:[ Style.result ]
+                        [ Vdom.Node.text "Score Earned:" ]
+                    ; Vdom.Node.div
+                        ~attrs:[ Style.score_value ]
+                        [ Vdom.Node.text ("+" ^ Int.to_string awarded_points)
+                        ]
+                    ]
+                ]
+            ]
+      in
+      let%sub house_data = house_data_card ~id houses in
+      let%arr guess_screen = guess_screen
+      and photo_carousel = photo_carousel
+      and house_data = house_data
+      and score = score in
+      Vdom.Node.div
+        ~attrs:[ Style.big_body ]
+        [ Vdom.Node.h1
+            ~attrs:[ Style.second_title ]
+            [ Vdom.Node.text "Property Prodigy" ]
+          (* ; Vdom.Node.button ~attrs: [ Style.button ; Vdom.Attr.on_click
+             (fun _ -> set_url Page.Homepage) ] [ Vdom.Node.text "Go to
+             homepage" ] *)
+        ; Vdom.Node.div
+            (* ~attrs:[ Style.organize ] *)
+            [ Vdom.Node.div
+                ~attrs:[ Style.top_row ]
+                [ Vdom.Node.div
+                    ~attrs:[ Style.score_card ]
+                    [ Vdom.Node.div
+                        ~attrs:[ Style.current_score ]
+                        [ Vdom.Node.text "Current Score" ]
+                    ; Vdom.Node.div
+                        ~attrs:[ Style.user_score ]
+                        [ Vdom.Node.text (Int.to_string score) ]
+                    ]
+                ; house_data
+                ]
+            ; photo_carousel
+            ; guess_screen
+            ]
+        ]
+  in
+  let%arr playing_game = playing_game in
+  Vdom.Node.div [ playing_game ]
 ;;

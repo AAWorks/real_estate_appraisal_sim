@@ -13,7 +13,7 @@ body {
 }
 .big_body {
   margin:auto;
-  max-width: 1080px;
+  max-width: 1100px;
   align-items: center;
 }
 .title {
@@ -118,8 +118,11 @@ body {
   font-size: 24px;
   font-weight: bold;
 }
-
-form input {
+.username-input {
+  margin-bottom: 15px;
+  text-transform: none;
+} 
+form input, td input {
   width: 200px;
   transition: all .5s ease;
   color: rgba(0, 0, 0, 0.5);
@@ -138,6 +141,7 @@ form input {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* border: 1px solid red; */
 }
 
 form button {
@@ -358,3 +362,68 @@ form button {
   color: #00aaff;
   /* color: #F1E3D3; */
 }
+
+.game-over {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+/* Game over */
+.game-over-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.game_over_h {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.final-score {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.score-value {
+  font-weight: bold;
+  text-align: center;
+  color: #00aaff;
+}
+
+
+
+
+.save-button {
+  margin-left: 20px;
+  margin-top: 20px;
+  padding: 17px 40px;
+  border-radius: 50px;
+  border: 0;
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 15px;
+  transition: all .5s ease;
+}
+
+.save-button:hover {
+  letter-spacing: 3px;
+  background-color: #5AD1D3(261deg 80% 48%);
+  color: hsl(0, 0%, 0%);
+  box-shadow: rgb(24, 148, 220) 0px 7px 29px 0px;
+ }
+ 
+ .save-button:active {
+  letter-spacing: 3px;
+  background-color: #5AD1D3(261deg 80% 48%);
+  color: hsl(0, 0%, 0%);
+  box-shadow: rgb(24, 148, 220) 0px 0px 0px 0px;
+  transform: translateY(10px);
+  transition: 100ms;
+ }
