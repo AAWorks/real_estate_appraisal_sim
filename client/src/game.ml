@@ -187,6 +187,12 @@ let component
                       Effect.return ())
                   ]
                 [ Vdom.Node.text "Save Score" ]
+            ; Vdom.Node.button
+                ~attrs:
+                  [ Style.save_button
+                  ; Vdom.Attr.on_click (fun _ -> set_url Page.Homepage)
+                  ]
+                [ Vdom.Node.text "HOME" ]
             ]
         ]
     | _ ->
@@ -237,7 +243,7 @@ let component
           and sleep = sleep
           and int_house_price = int_house_price in
           Vdom.Node.div
-            ~attrs:[ Style.input ]
+            ~attrs:[ Style.price_input; Style.input ]
             [ (Form.view_as_vdom
                  ~on_submit:
                    (Form.Submit.create
@@ -343,7 +349,6 @@ let component
              (fun _ -> set_url Page.Homepage) ] [ Vdom.Node.text "Go to
              homepage" ] *)
         ; Vdom.Node.div
-            (* ~attrs:[ Style.organize ] *)
             [ Vdom.Node.div
                 ~attrs:[ Style.top_row ]
                 [ Vdom.Node.div

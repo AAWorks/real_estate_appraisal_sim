@@ -144,6 +144,10 @@ form input, td input {
   /* border: 1px solid red; */
 }
 
+.price_input {
+  margin-top: 225px;
+}
+
 form button {
   display: none;
 }
@@ -181,7 +185,7 @@ form button {
 .arrow {
   cursor: pointer;
   height: 120px;
-  left: 50%;
+  left: 120%;
   position: relative;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
@@ -249,7 +253,7 @@ form button {
 .arrow_left {
   cursor: pointer;
   height: 120px;
-  left: 50%;
+  left: -20%;
   position: relative;
   top: 50%;
   transform: translateX(-50%) translateY(-50%) rotate(180deg);
@@ -315,20 +319,25 @@ form button {
 
 
 .guessing_container {
-  width: 300px;
+  margin-top: 225px;
+  width: 350px;
   padding: 20px;
   background-color: transparent;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   text-align: center;
-  display: grid;
+  display: flex;
+  justify-content: space-evenly;
   place-items: center;
-  grid-template-columns: auto;
+  grid-template-rows: auto;
 }
+
+
 .outside {
   display: flex;
   justify-content: center;
 }
+
 
 .house_price,
 .user_guess {
@@ -361,7 +370,9 @@ form button {
   font-weight: bold;
   color: #00aaff;
   /* color: #F1E3D3; */
-}
+/* } */}
+
+
 
 .game-over {
   display: flex;
@@ -403,9 +414,10 @@ form button {
   margin-top: 20px;
   padding: 17px 40px;
   border-radius: 50px;
-  border: 0;
-  background-color: white;
-  box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+  border: 4px;
+  background-color: transparent;
+  /* box-shadow: rgb(0 0 0 / 5%) 0 0 8px; */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-size: 15px;

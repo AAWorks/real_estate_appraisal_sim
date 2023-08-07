@@ -227,3 +227,8 @@ form button {
     color: #00aaff;
     font-size: 1.1rem;
 }
+
+.leaderboard_home {
+    display: flex;
+    justify-content: center;
+}
