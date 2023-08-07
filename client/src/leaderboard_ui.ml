@@ -23,7 +23,17 @@ let component ~url:_ ~set_url:_ =
   let%sub rows = rows in
   let%arr rows = rows in
   Vdom.Node.div
-    [ Vdom.Node.text "Leaderboard"
-    ; Vdom.Node.sexp_for_debugging [%message (rows : Row.t list)]
-    ]
+    ([ Vdom.Node.h1
+         ~attrs:[ Style.title ]
+         [ Vdom.Node.text "Property Prodigy Leaderboard" ]
+     ]
+     @ [ Vdom.Node.ol
+           ~attrs:[ Leaderboard.myol ]
+           (List.map rows ~f:(fun row ->
+              Vdom.Node.li
+                ~attrs:[ Leaderboard.myli ]
+                [ Vdom.Node.text
+                    (row.username ^ " | Score:  " ^ Int.to_string row.score)
+                ]))
+       ])
 ;;

@@ -8,7 +8,7 @@ let read_rows ~filename =
   let pipe = Reader.read_sexps reader in
   let%map sexplist = Pipe.to_list pipe in
   let rows = List.map sexplist ~f:(fun row_sexp -> Row.t_of_sexp row_sexp) in
-  List.sort ~compare:(fun row row2 -> Int.compare row.score row2.score) rows
+  List.sort ~compare:(fun row row2 -> Int.compare row2.score row.score) rows
 ;;
 
 let first_n_rows ~n ~filename =

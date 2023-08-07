@@ -6,7 +6,8 @@ open! Protocol
 
 let get_rows () =
   Rpc.Rpc.implement Get_rows.rpc (fun _ (n : int) ->
-    first_n_rows ~n ~filename:"resources/leaderboard.txt")
+    let%bind rows = first_n_rows ~n ~filename:"resources/leaderboard.txt" in
+    return rows)
 ;;
 
 let add_entry () =
