@@ -32,8 +32,14 @@ let component ~url:_ ~set_url:_ =
            (List.map rows ~f:(fun row ->
               Vdom.Node.li
                 ~attrs:[ Leaderboard.myli ]
-                [ Vdom.Node.text
-                    (row.username ^ " | Score:  " ^ Int.to_string row.score)
+                [ Vdom.Node.div
+                    ~attrs:[ Leaderboard.flex ]
+                    [ Vdom.Node.div ~attrs:[] [ Vdom.Node.text row.username ]
+                    ; Vdom.Node.div
+                        ~attrs:[]
+                        [ Vdom.Node.text ("Score: " ^ Int.to_string row.score)
+                        ]
+                    ]
                 ]))
        ])
 ;;
