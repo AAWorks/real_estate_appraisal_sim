@@ -19,7 +19,7 @@ let rows : Row.t list Computation.t =
   | Some (_query, response) -> return response
 ;;
 
-let component ~url:_ ~set_url:_ =
+let component ~url:_ ~set_url =
   let%sub rows = rows in
   let%arr rows = rows in
   Vdom.Node.div
@@ -41,5 +41,16 @@ let component ~url:_ ~set_url:_ =
                         ]
                     ]
                 ]))
+       ]
+     @ [ Vdom.Node.div
+           ~attrs:[ Leaderboard.leaderboard_home ]
+           [ Vdom.Node.button
+               ~attrs:
+                 [ Style.save_button
+                 ; Leaderboard.leaderboard_home
+                 ; Vdom.Attr.on_click (fun _ -> set_url Page.Homepage)
+                 ]
+               [ Vdom.Node.text "HOME" ]
+           ]
        ])
 ;;
