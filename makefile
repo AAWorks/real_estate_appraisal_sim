@@ -7,6 +7,7 @@ deps:
 build:
 	dune build
 run_commandline:
+	git checkout prod_cmd
 	dune exec ./bin/main.exe
 run_server:
 	./run-game-server.sh -port 8181
