@@ -83,3 +83,13 @@ let weighted_points ~actual ~guess ?(point_scale = 100.0) () =
     else Int.of_float ((1.0 -. pct +. 1.0) *. point_scale)
   else Int.of_float (pct *. point_scale)
 ;;
+
+let handle_number_input ~(number_str : string) : string =
+  let check_str ~s =
+    try String.equal (Int.of_string s |> Int.to_string) s with
+    | Failure _ -> false
+  in
+  if check_str ~s:number_str
+  then BetterString.to_price_string (Int.of_string number_str)
+  else number_str
+;;

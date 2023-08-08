@@ -34,3 +34,5 @@ val weighted_points
   -> ?point_scale:float
   -> unit
   -> int
+
+val handle_number_input : number_str:string -> string
