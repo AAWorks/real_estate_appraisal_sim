@@ -6,9 +6,6 @@ deps:
 	opam install -y core ocurl core_unix bonsai ppx_jane ppx_css core_unix postgres_async ppx_jsonaf_conv cohttp-lwt-unix cohttp_static_handler
 build:
 	dune build
-run_commandline:
-	git checkout prod_cmd
-	dune exec ./bin/main.exe
 run_server:
 	./run-game-server.sh -port 8181
 test:
