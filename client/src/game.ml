@@ -149,14 +149,9 @@ let component
       and sleep = sleep
       and send_score = send_score in
       Vdom.Node.div
-        [ (* [ Vdom.Node.button ~attrs: [ Style.button ; Vdom.Attr.on_click
-             (fun _ -> set_url Page.Homepage) ] [ Vdom.Node.text "HOME" ] *)
-          Vdom.Node.div
+        [ Vdom.Node.div
             ~attrs:[ Style.game_over; Style.big_body ]
-            [ (* Vdom.Node.button ~attrs: [ Style.button ; Vdom.Attr.on_click
-                 (fun _ -> set_url Page.Homepage) ] [ Vdom.Node.text "Home"
-                 ] *)
-              Vdom.Node.h1
+            [ Vdom.Node.h1
                 ~attrs:[ Style.second_title ]
                 [ Vdom.Node.text "Property Prodigy" ]
             ; Vdom.Node.div
@@ -171,20 +166,19 @@ let component
                 ]
             ; Vdom.Node.div
                 ~attrs:[ Style.input ]
-                [ Form.view_as_vdom
-                    ~on_submit:
-                      (Form.Submit.create
-                         ~handle_enter:true
-                         ~f:(fun username -> send_score (username, score))
-                         ())
-                    username_textbox
-                ]
+                [ Form.view_as_vdom username_textbox ]
             ; Vdom.Node.button
                 ~attrs:
                   [ Style.save_button
                   ; Vdom.Attr.on_click (fun _ ->
-                      let%bind.Effect () = sleep (Time_ns.Span.of_sec 1.5) in
-                      Effect.return ())
+                      let%bind.Effect () =
+                        let username =
+                          Form.value_or_default username_textbox ~default:""
+                        in
+                        send_score (username, score)
+                      in
+                      let%bind.Effect () = sleep (Time_ns.Span.of_sec 0.5) in
+                      set_url Page.Leaderboard)
                   ]
                 [ Vdom.Node.text "Save Score" ]
             ; Vdom.Node.button
@@ -345,9 +339,6 @@ let component
         [ Vdom.Node.h1
             ~attrs:[ Style.second_title ]
             [ Vdom.Node.text "Property Prodigy" ]
-          (* ; Vdom.Node.button ~attrs: [ Style.button ; Vdom.Attr.on_click
-             (fun _ -> set_url Page.Homepage) ] [ Vdom.Node.text "Go to
-             homepage" ] *)
         ; Vdom.Node.div
             [ Vdom.Node.div
                 ~attrs:[ Style.top_row ]
