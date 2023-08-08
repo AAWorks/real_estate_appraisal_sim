@@ -21,7 +21,7 @@ module BetterString = struct
   let int_of_price_string n =
     n
     |> String.filter ~f:(fun ch ->
-      not (Char.equal ch ',' || Char.equal ch '$'))
+         not (Char.equal ch ',' || Char.equal ch '$'))
   ;;
 end
 
@@ -95,7 +95,7 @@ let handle_number_input ~(number_str : string) : string =
     try String.equal (Int.of_string s |> Int.to_string) s with
     | Failure _ -> false
   in
-  if check_str ~s:number_str
+  if String.is_prefix ~prefix:"$" number_str || check_str ~s:number_str
   then BetterString.to_price_string (Int.of_string number_str)
   else number_str
 ;;
