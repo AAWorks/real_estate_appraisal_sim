@@ -17,6 +17,12 @@ module BetterString = struct
     "$"
     ^ (n |> Printf.sprintf "%#d" |> String.tr ~target:'_' ~replacement:',')
   ;;
+
+  let int_of_price_string n =
+    n
+    |> String.filter ~f:(fun ch ->
+         not (Char.equal ch ',' || Char.equal ch '$'))
+  ;;
 end
 
 module House = struct
