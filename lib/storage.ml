@@ -123,8 +123,9 @@ let pull_data () =
     ; "seattle"
     ]
   in
-  let houses_per_view = 90 / List.length locations / 2 in
-  store_houses ~locations ~houses_per_view
+  let locations_two = [("boston",5); ("san diego",10); ("honolu",5); ("santa barbara", 1); ("denver",1); ("fresno",1); ("portland",1);("beverly hill",10);("las vegas", 10)] in
+  let houses_per_view = 90 / List.length locations_two / 2 in
+  store_houses ~locations:locations_two ~houses_per_view
 ;;
 
 let%expect_test "house_rec" =

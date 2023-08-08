@@ -1,7 +1,7 @@
 open! Core
 
 val house_data
-  :  location:string
+  :  location:string * int
   -> view:string
   -> n_houses:int
   -> string list list

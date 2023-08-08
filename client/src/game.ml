@@ -166,7 +166,16 @@ let component
                 ]
             ; Vdom.Node.div
                 ~attrs:[ Style.input ]
-                [ Form.view_as_vdom username_textbox ]
+                [ (Form.view_as_vdom username_textbox
+                   |> fun x ->
+                   let attr = Vdom.Attr.create "autocomplete" "off" in
+                   match x with
+                   | Vdom.Node.Element element ->
+                     Vdom.Node.Element
+                       (Vdom.Node.Element.map_attrs element ~f:(fun a ->
+                          Vdom.Attr.combine a attr))
+                   | x -> Vdom.Node.span ~attrs:[ attr ] [ x ])
+                ]
             ; Vdom.Node.button
                 ~attrs:
                   [ Style.save_button

@@ -33,10 +33,12 @@ module Curl = struct
   ;;
 end
 
-let house_data ~(location : string) ~(view : string) ~(n_houses : int) =
+let house_data ~(location : (string * int)) ~(view : string) ~(n_houses : int) =
+  let location, millions = location in
   let location =
     String.substr_replace_all location ~pattern:" " ~with_:"%20"
   in
+  let millions = 1000000 * millions in
   let view_link =
     match view with
     | "water" -> "isWaterfront=true"
@@ -46,12 +48,13 @@ let house_data ~(location : string) ~(view : string) ~(n_houses : int) =
   let link =
     "https://zillow56.p.rapidapi.com/search?location="
     ^ location
-    ^ "&status=forSale&isSingleFamily=true&isMultiFamily=false&isApartment=false&isCondo=false&isManufactured=false&isTownhouse=false&isLotLand=false&price_min=300000&"
+    ^ "&status=forSale&isSingleFamily=true&isMultiFamily=false&isApartment=false&isCondo=false&isManufactured=false&isTownhouse=false&isLotLand=false&price_min="
+    ^ (Int.to_string millions) ^ "&"
     ^ view_link
     ^ "&singleStory=false&onlyWithPhotos=true"
   in
   let rapid =
-    [ "X-RapidAPI-Key: c41557561amsha79320cdb4ab359p156dfcjsn61eb3e8d818d"
+    [ "X-RapidAPI-Key: b183b26252msh3407ce7bff0814fp117a74jsn890671917ddc"
     ; "X-RapidAPI-Host: zillow56.p.rapidapi.com"
     ]
   in
@@ -77,7 +80,7 @@ let photos ~(zpid : string) =
     "https://zillow-data-v2.p.rapidapi.com/properties/detail?zpid=" ^ zpid
   in
   let rapid =
-    [ "X-RapidAPI-Key: c41557561amsha79320cdb4ab359p156dfcjsn61eb3e8d818d"
+    [ "X-RapidAPI-Key: b183b26252msh3407ce7bff0814fp117a74jsn890671917ddc"
     ; "X-RapidAPI-Host: zillow-data-v2.p.rapidapi.com"
     ]
   in
