@@ -7,6 +7,7 @@ deps:
 build:
 	dune build
 run_server:
+	git checkout prod_server
 	./run-game-server.sh -port 8181
 test:
 	dune test
