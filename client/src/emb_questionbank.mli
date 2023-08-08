@@ -3,6 +3,7 @@ open! Core
 module BetterString : sig
   val title : string -> string
   val to_price_string : int -> string
+  val int_of_price_string : string -> string
 end
 
 module House : sig

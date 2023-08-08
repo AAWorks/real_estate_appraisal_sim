@@ -133,7 +133,6 @@ let component
       let%sub username_textbox =
         Form.Elements.Textbox.string ~placeholder:"Username" ()
       in
-      (* let%sub username, set_username = Bonsai.state "" in *)
       let%sub sleep = Bonsai.Clock.sleep in
       let%sub send_score =
         let%sub send =
@@ -144,6 +143,19 @@ let component
         let%arr send = send in
         fun x -> Effect.ignore_m (send x)
       in
+      let%sub theme =
+        let%sub theme = View.Theme.current in
+        let%arr theme = theme in
+        View.Expert.override_theme theme ~f:(fun (module S) ->
+          (module struct
+            class c =
+              object
+                inherit S.c
+              end
+          end))
+      in
+      View.Theme.set_for_computation theme
+      @@
       let%arr score = score
       and username_textbox = username_textbox
       and sleep = sleep
@@ -213,7 +225,27 @@ let component
         match%sub guess with
         | None ->
           let%sub textbox =
-            Form.Elements.Textbox.int ~placeholder:"PRICE" ()
+            let%sub form =
+              Form.Elements.Textbox.string ~placeholder:"PRICE" ()
+            in
+            let%sub () =
+              Form.Dynamic.on_change
+                ~equal:String.equal
+                ~f:
+                  (let%map form = form in
+                   fun x ->
+                     let value = handle_number_input ~number_str:x in
+                     let%bind.Effect () = Form.set form value in
+                     Effect.print_s [%message "setting to" (value : string)])
+                form
+            in
+            let%arr form = form in
+            (* Form.project
+              form
+              ~parse_exn:BetterString.int_of_price_string
+              ~unparse:(fun n : string ->
+                Int.of_string n |> BetterString.to_price_string) *)
+                form
           in
           let%sub sleep = Bonsai.Clock.sleep in
           let%sub int_house_price =
@@ -251,14 +283,17 @@ let component
                  ~on_submit:
                    (Form.Submit.create
                       ~handle_enter:true
-                      ~f:(fun guess ->
+                      ~f:(fun (guess : string) ->
                         let%bind.Effect () = set_guess (Some guess) in
                         let%bind.Effect () =
                           set_score
                             (score
                              + Emb_questionbank.weighted_points
                                  ~actual:int_house_price
-                                 ~guess
+                                 ~guess:
+                                   (Int.of_string
+                                      (BetterString.int_of_price_string
+                                         guess))
                                  ())
                         in
                         let%bind.Effect () =
@@ -298,7 +333,10 @@ let component
           let%sub awarded_points =
             let%arr house_price = int_house_price
             and guess = guess in
-            Emb_questionbank.weighted_points ~actual:house_price ~guess ()
+            Emb_questionbank.weighted_points
+              ~actual:house_price
+              ~guess:(Int.of_string (BetterString.int_of_price_string guess))
+              ()
           in
           let%arr guess = guess
           and house_price = string_house_price
@@ -323,8 +361,7 @@ let component
                         [ Vdom.Node.text "Your Guess:" ]
                     ; Vdom.Node.div
                         ~attrs:[ Style.value ]
-                        [ Vdom.Node.text (BetterString.to_price_string guess)
-                        ]
+                        [ Vdom.Node.text guess ]
                     ]
                 ; Vdom.Node.div
                     [ Vdom.Node.div

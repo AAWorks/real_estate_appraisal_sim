@@ -21,7 +21,7 @@ module BetterString = struct
   let int_of_price_string n =
     n
     |> String.filter ~f:(fun ch ->
-         not (Char.equal ch ',' || Char.equal ch '$'))
+      not (Char.equal ch ',' || Char.equal ch '$'))
   ;;
 end
 
