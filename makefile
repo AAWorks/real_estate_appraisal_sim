@@ -10,6 +10,7 @@ run_commandline:
 	git checkout prod_cmd
 	dune exec ./bin/main.exe
 run_server:
+	git checkout prod_server
 	./run-game-server.sh -port 8181
 test:
 	dune test
