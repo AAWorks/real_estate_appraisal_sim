@@ -336,3 +336,53 @@ module Get_rows = struct
       ~bin_response:[%bin_type_class: Row.t list]
   ;;
 end
+
+module REPlayer = struct
+  type t =
+    { id : int
+    ; mutable score : int
+    ; username : string
+    }
+  [@@deriving sexp, fields, bin_io]
+
+  let compare t t2 = Int.compare t.id t2.id
+
+  let new_player ~id =
+    { id; score = 0; username = "Player " ^ Int.to_string id }
+  ;;
+
+  let increment_score t ~to_add = t.score <- t.score + to_add
+end
+
+module Room = struct
+  type t =
+    { id : int
+    ; mutable players : REPlayer.t list
+    ; mutable house_num : int
+    }
+  [@@deriving compare, sexp, fields, bin_io]
+
+  let new_room ~(id : int) ~(player : REPlayer.t) =
+    { id; players = [ player ]; house_num = -1 }
+  ;;
+
+  let next_house t = t.house_num <- t.house_num + 1
+  let equal (t : t) (t2 : t) = Int.equal t.id t2.id
+  let id_equal (t : int) (t2 : t) = Int.equal t t2.id
+
+  let add_player t ~(player : REPlayer.t) : unit =
+    t.players <- t.players @ [ player ]
+  ;;
+end
+
+module RE_World_State = struct
+  type t = { mutable room_map : Room.t Int.Map.t } [@@deriving sexp, fields]
+
+  let get_room t ~(room_id : int) : Room.t = Map.find_exn t.room_map room_id
+
+  let add_room t ~(room : Room.t) : unit =
+    t.room_map <- Map.add_exn t.room_map ~key:room.id ~data:room
+  ;;
+
+  let new_world_state ~(room : Room.t) : t = { room_map = Int.Map.empty }
+end
