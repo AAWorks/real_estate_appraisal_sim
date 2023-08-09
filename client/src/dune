@@ -35,6 +35,26 @@
   (bash "%{bin:css_inliner} %{deps} \"((rewrite ()))\"")))
 
 (rule
+ (targets
+  multiplayer.ml
+  multiplayer.mli
+  multiplayer__generated.ml
+  multiplayer__generated.mli)
+ (deps multiplayer.css)
+ (action
+  (bash "%{bin:css_inliner} %{deps} \"((rewrite ()))\"")))
+
+(rule
+ (targets
+  loading.ml
+  loading.mli
+  loading__generated.ml
+  loading__generated.mli)
+ (deps loading.css)
+ (action
+  (bash "%{bin:css_inliner} %{deps} \"((rewrite ()))\"")))
+
+(rule
  (targets embedded_files.ml embedded_files.mli)
  (deps %{bin:ocaml-embed-file} %{workspace_root}/resources/house_data.txt)
  (action

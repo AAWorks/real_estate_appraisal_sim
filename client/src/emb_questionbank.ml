@@ -21,7 +21,7 @@ module BetterString = struct
   let int_of_price_string n =
     n
     |> String.filter ~f:(fun ch ->
-         not (Char.equal ch ',' || Char.equal ch '$'))
+      not (Char.equal ch ',' || Char.equal ch '$'))
   ;;
 end
 
@@ -91,11 +91,22 @@ let weighted_points ~actual ~guess ?(point_scale = 100.0) () =
 ;;
 
 let handle_number_input ~(number_str : string) : string =
+  let number_str =
+    String.filter ~f:(function '$' | ',' -> false | _ -> true) number_str
+  in
   let check_str ~s =
     try String.equal (Int.of_string s |> Int.to_string) s with
     | Failure _ -> false
   in
-  if String.is_prefix ~prefix:"$" number_str || check_str ~s:number_str
+  if check_str ~s:number_str
   then BetterString.to_price_string (Int.of_string number_str)
   else number_str
+;;
+
+let%expect_test _ =
+  let test s =
+    let res = handle_number_input ~number_str:s in
+    print_endline [%string "%{s} -> %{res}"]
+  in
+  List.iter [ "1"; "123345566"; "$2" ] ~f:test
 ;;

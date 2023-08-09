@@ -1,6 +1,5 @@
 (library
  (name real_estate_appraisal_sim)
- (libraries core curl cohttp lambdasoup async jsonaf)
- (inline_tests)
+ (libraries core curl cohttp lambdasoup async jsonaf virtual_dom.keyboard)
  (preprocess
-  (pps ppx_jane ppx_jsonaf_conv)))
+  (pps ppx_jane ppx_jsonaf_conv js_of_ocaml-ppx -no-check bonsai.ppx_bonsai)))

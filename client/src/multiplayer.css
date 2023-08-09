@@ -1,0 +1,93 @@
+html,
+body {
+  background: #F1E3D3;
+  color: #000000;
+  font-family: "Papyrus", fantasy;
+  font-weight: bold
+}
+.big_body {
+  margin:auto;
+  max-width: 1100px;
+  align-items: center;
+}
+.title {
+  text-align: center;
+  font-weight: bolder;
+  margin-top:5vh;
+}
+
+.second_title {
+  text-align: center;
+  font-weight: bolder;
+}
+.help {
+  display: flex;
+  height: 60vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.button {
+    width: 200px;
+    transition: all .5s ease;
+    color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.731);
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1;
+    font-size: 17px;
+    background-color: transparent;
+    padding: 10px;
+    outline: none;
+    border-radius: 4px;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+  }
+  
+.button:hover {
+    color: #F1E3D3;
+    background-color: #000000
+  }
+
+.input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+.input input {
+    min-height: 50px;
+    max-width: 150px;
+    padding: 0 1rem;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 17px;
+    border: 1px solid rgba(0, 0, 0, 0.731);
+    border-radius: 6px 0 0 6px;
+    background-color: transparent;
+  }
+  
+.button--submit {
+    min-height: 50px;
+    padding: .5em 1em;
+    border: 1px solid rgba(0, 0, 0, 0.731);
+    border-radius: 0 6px 6px 0;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 17px;
+    cursor: pointer;
+    /* transition: background-color .5s ease-in-out; */
+    transition: all .5s ease;
+
+  }
+  
+.button--submit:hover {
+    color: #F1E3D3;
+    background-color: #000000
+  }
+  
+.input input:focus, .input input:focus-visible {
+    border-color: rgba(0, 0, 0, 0.731);
+    outline: none;
+  }
+  

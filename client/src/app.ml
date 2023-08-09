@@ -25,7 +25,13 @@ let component ~url ~set_url =
                    [ Style.button
                    ; Vdom.Attr.on_click (fun _ -> set_url (Page.Game 1))
                    ]
-                 [ Vdom.Node.text "Start" ]
+                 [ Vdom.Node.text "Single Player" ];
+                 Vdom.Node.button
+                 ~attrs:
+                   [ Style.button
+                   ; Vdom.Attr.on_click (fun _ -> set_url (Page.Game 12))
+                   ]
+                 [ Vdom.Node.text "Multiplayer" ]
              ; Vdom.Node.button
                  ~attrs:
                    [ Style.button

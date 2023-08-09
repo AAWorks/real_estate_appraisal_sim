@@ -129,6 +129,127 @@ let component
   @@
   let%sub playing_game =
     match%sub id with
+    | 13 ->
+      Bonsai.const
+      @@
+      let top_portion =
+        Vdom.Node.div
+          ~attrs:[]
+          [ Vdom.Node.h1
+              ~attrs:
+                [ Vdom.Attr.on_click (fun _ -> set_url Page.Homepage)
+                ; Style.second_title
+                ]
+              [ Vdom.Node.text "Property Prodigy" ]
+          ; Vdom.Node.h2
+              ~attrs:[ Style.second_title; Loading.title_second ]
+              [ Vdom.Node.text "Session Id: 123456" ]
+          ]
+      in
+      let loading_animation =
+        Vdom.Node.div
+          ~attrs:[ Loading.total ]
+          [ Vdom.Node.div
+              ~attrs:[ Loading.hexagon ]
+              [ Vdom.Node.div
+                  ~attrs:[ Loading.hexagon__group ]
+                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ]
+              ; Vdom.Node.div
+                  ~attrs:[ Loading.hexagon__group ]
+                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ]
+              ; Vdom.Node.div
+                  ~attrs:[ Loading.hexagon__group ]
+                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ]
+              ; Vdom.Node.div
+                  ~attrs:[ Loading.hexagon__group ]
+                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ]
+              ; Vdom.Node.div
+                  ~attrs:[ Loading.hexagon__group ]
+                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ]
+              ; Vdom.Node.div
+                  ~attrs:[ Loading.hexagon__group ]
+                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+                  ]
+              ]
+          ]
+      in
+      Vdom.Node.div ~attrs:[Loading.everything]
+        [ top_portion
+        ; loading_animation
+        ; Vdom.Node.div
+            ~attrs:[ Loading.text ]
+            [ Vdom.Node.text "Waiting For Player 2" ]
+        ]
+    | 12 ->
+      let%sub room_code =
+        Form.Elements.Textbox.int ~placeholder:"Room Code" ()
+      in
+      let%arr room_code = room_code in
+      Vdom.Node.div
+        ~attrs:[]
+        [ Vdom.Node.h1
+            ~attrs:
+              [ Style.title
+              ; Vdom.Attr.on_click (fun _ -> set_url Page.Homepage)
+              ]
+            [ Vdom.Node.text "Property Prodigy" ]
+        ; Vdom.Node.div
+            ~attrs:[ Style.help ]
+            [ Vdom.Node.button
+                ~attrs:
+                  [ Style.button
+                  ; Vdom.Attr.on_click (fun _ -> set_url (Page.Game 13))
+                  ]
+                [ Vdom.Node.text "Create Game" ]
+            ; Vdom.Node.div
+                ~attrs:[ Multiplayer.input_group ]
+                [ Vdom.Node.div
+                    ~attrs:[ Multiplayer.input ]
+                    [ Form.view_as_vdom room_code ]
+                ; Vdom.Node.button
+                    ~attrs:
+                      [ Multiplayer.button__submit
+                      ; Vdom.Attr.on_click (fun _ -> set_url (Page.Game 14))
+                      ]
+                    [ Vdom.Node.text "JOIN GAME" ]
+                ]
+            ]
+        ]
     | 11 ->
       let%sub username_textbox =
         Form.Elements.Textbox.string ~placeholder:"Username" ()
@@ -164,7 +285,10 @@ let component
         [ Vdom.Node.div
             ~attrs:[ Style.game_over; Style.big_body ]
             [ Vdom.Node.h1
-                ~attrs:[ Style.second_title ]
+                ~attrs:
+                  [ Style.second_title
+                  ; Vdom.Attr.on_click (fun _ -> set_url Page.Homepage)
+                  ]
                 [ Vdom.Node.text "Property Prodigy" ]
             ; Vdom.Node.div
                 ~attrs:[ Style.final_score ]
@@ -224,28 +348,32 @@ let component
       let%sub guess_screen =
         match%sub guess with
         | None ->
-          let%sub textbox =
-            let%sub form =
-              Form.Elements.Textbox.string ~placeholder:"PRICE" ()
+          let%sub textbox_vdom, textbox_number =
+            let%sub number, set_number = Bonsai.state "" in
+            let%sub vdom =
+              let%arr number = number
+              and set_number = set_number in
+              Vdom.Node.input
+                ~attrs:
+                  [ Vdom.Attr.type_ "text"
+                  ; Vdom.Attr.value_prop number
+                  ; Vdom.Attr.placeholder "PRICE"
+                  ; Vdom.Attr.on_input (fun _event s ->
+                      let res = handle_number_input ~number_str:s in
+                      let%bind.Effect () =
+                        Effect.print_s
+                          [%message
+                            "" ~on_keydown:(s : string) (res : string)]
+                      in
+                      match String.equal number res with
+                      | true -> Effect.Ignore
+                      | false -> set_number res)
+                  ]
+                ()
             in
-            let%sub () =
-              Form.Dynamic.on_change
-                ~equal:String.equal
-                ~f:
-                  (let%map form = form in
-                   fun x ->
-                     let value = handle_number_input ~number_str:x in
-                     let%bind.Effect () = Form.set form value in
-                     Effect.print_s [%message "setting to" (value : string)])
-                form
-            in
-            let%arr form = form in
-            (* Form.project
-              form
-              ~parse_exn:BetterString.int_of_price_string
-              ~unparse:(fun n : string ->
-                Int.of_string n |> BetterString.to_price_string) *)
-                form
+            let%arr vdom = vdom
+            and number = number in
+            vdom, number
           in
           let%sub sleep = Bonsai.Clock.sleep in
           let%sub int_house_price =
@@ -270,38 +398,46 @@ let component
           in
           View.Theme.set_for_computation theme
           @@
-          let%arr textbox = textbox
+          let%arr textbox_vdom = textbox_vdom
+          and textbox_number = textbox_number
           and set_guess = set_guess
           and score = score
           and set_score = set_score
           and id = id
           and sleep = sleep
           and int_house_price = int_house_price in
+          let on_submit guess =
+            let%bind.Effect () = set_guess (Some guess) in
+            let%bind.Effect () =
+              set_score
+                (score
+                 + Emb_questionbank.weighted_points
+                     ~actual:int_house_price
+                     ~guess:
+                       (Int.of_string
+                          (BetterString.int_of_price_string guess))
+                     ())
+            in
+            let%bind.Effect () = sleep (Time_ns.Span.of_sec 3.0) in
+            set_url (Page.Game (id + 1))
+          in
           Vdom.Node.div
             ~attrs:[ Style.price_input; Style.input ]
-            [ (Form.view_as_vdom
-                 ~on_submit:
-                   (Form.Submit.create
-                      ~handle_enter:true
-                      ~f:(fun (guess : string) ->
-                        let%bind.Effect () = set_guess (Some guess) in
-                        let%bind.Effect () =
-                          set_score
-                            (score
-                             + Emb_questionbank.weighted_points
-                                 ~actual:int_house_price
-                                 ~guess:
-                                   (Int.of_string
-                                      (BetterString.int_of_price_string
-                                         guess))
-                                 ())
-                        in
-                        let%bind.Effect () =
-                          sleep (Time_ns.Span.of_sec 3.0)
-                        in
-                        set_url (Page.Game (id + 1)))
-                      ())
-                 textbox
+            [ (Vdom.Node.create
+                 "form"
+                 ~attrs:
+                   [ Vdom.Attr.on_keydown (fun event ->
+                       let get_key_code : 'a -> int =
+                         Js_of_ocaml.Js.Unsafe.pure_js_expr
+                           {|function(event){return event.keyCode}|}
+                       in
+                       match get_key_code event = 13 with
+                       | true -> on_submit textbox_number
+                       | false -> Effect.Ignore)
+                   ; Vdom.Attr.on_submit (fun _event ->
+                       Effect.Prevent_default)
+                   ]
+                 [ textbox_vdom ]
                |> fun x ->
                let attr = Vdom.Attr.create "autocomplete" "off" in
                match x with
@@ -383,7 +519,10 @@ let component
       Vdom.Node.div
         ~attrs:[ Style.big_body ]
         [ Vdom.Node.h1
-            ~attrs:[ Style.second_title ]
+            ~attrs:
+              [ Style.second_title
+              ; Vdom.Attr.on_click (fun _ -> set_url Page.Homepage)
+              ]
             [ Vdom.Node.text "Property Prodigy" ]
         ; Vdom.Node.div
             [ Vdom.Node.div
