@@ -19,23 +19,14 @@ let add_entry () =
       ~filename:"resources/leaderboard.txt")
 ;;
 
-let world_state () =
-  Rpc.Rpc.implement Get_world_state.rpc (fun _ (room_id : int) ->
-    get_world_state ~room_id)
-;;
+(* let world_state () = Rpc.Rpc.implement Get_world_state.rpc (fun _ (room_id
+   : int) -> get_world_state ~room_id) ;;
 
-let create_room () =
-  Rpc.Rpc.implement
-    Create_room.rpc
-    (fun _ (room_id : int) (player : Player.t) ->
-    create_room ~room_id ~player)
-;;
+   let create_room () = Rpc.Rpc.implement Create_room.rpc (fun _ (room_id :
+   int) (player : Player.t) -> create_room ~room_id ~player) ;;
 
-let join_room () =
-  Rpc.Rpc.implement
-    Join_room.rpc
-    (fun _ (room_id : int) (player : Player.t) -> join_room ~room_id ~player)
-;;
+   let join_room () = Rpc.Rpc.implement Join_room.rpc (fun _ (room_id : int)
+   (player : Player.t) -> join_room ~room_id ~player) ;; *)
 
 let implementations () =
   Rpc.Implementations.create_exn

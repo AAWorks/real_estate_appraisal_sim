@@ -247,3 +247,39 @@ end
 module Get_rows : sig
   val rpc : (int, Row.t list) Async_rpc_kernel.Rpc.Rpc.t
 end
+
+module REPlayer : sig
+  type t =
+    { id : int
+    ; mutable score : int
+    ; username : string
+    }
+  [@@deriving sexp, fields, bin_io]
+
+  val compare : t -> t -> int
+  val new_player : id:int -> t
+  val increment_score : t -> to_add:int -> unit
+end
+
+module Room : sig
+  type t =
+    { id : int
+    ; mutable players : REPlayer.t list
+    ; mutable house_num : int
+    }
+  [@@deriving compare, sexp, fields, bin_io]
+
+  val new_room : id:int -> player:REPlayer.t -> t
+  val next_house : t -> int
+  val equal : t -> t -> bool
+  val id_equal : int -> t -> bool
+  val add_player : t -> player:REPlayer.t -> unit
+end
+
+module RE_World_State : sig
+  type t = { mutable room_map : Room.t Int.Map.t } [@@deriving sexp, fields]
+
+  val get_room : t -> room_id:int -> Room.t
+  val add_room : t -> room:Room.t -> unit
+  val new_world_state : unit -> t
+end
