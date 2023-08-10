@@ -253,17 +253,21 @@ module REPlayer : sig
     { id : int
     ; mutable score : int
     ; username : string
+    ; mutable submitted : string Option.t
     }
   [@@deriving sexp, fields, bin_io]
 
   val compare : t -> t -> int
   val new_player : id:int -> t
   val increment_score : t -> to_add:int -> unit
+  val add_guess : t -> guess:string -> unit
+  val get_current_guess : t -> string Option.t
 end
 
 module Room : sig
   type t =
     { id : int
+    ; mutable joinable : bool
     ; mutable players : REPlayer.t list
     ; mutable house_num : int
     }
@@ -282,4 +286,20 @@ module RE_World_State : sig
   val get_room : t -> room_id:int -> Room.t
   val add_room : t -> room:Room.t -> unit
   val new_world_state : unit -> t
+  val add_to_room : t -> player:REPlayer.t -> room_id:int -> unit
+end
+
+module Get_world_state : sig
+  val rpc : (unit, RE_World_State.t) Async_rpc_kernel.Rpc.Rpc.t
+end
+
+module Create_room : sig
+  val rpc : (int * REPlayer.t, int) Async_rpc_kernel.Rpc.Rpc.t
+end
+
+module Join_room : sig
+  val rpc
+    : ( RE_World_State.t * REPlayer.t * int
+      , RE_World_State.t )
+      Async_rpc_kernel.Rpc.Rpc.t
 end
