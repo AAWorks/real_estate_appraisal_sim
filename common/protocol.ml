@@ -342,16 +342,30 @@ module REPlayer = struct
     { id : int
     ; mutable score : int
     ; username : string
+    ; mutable submitted : string Option.t
     }
   [@@deriving sexp, fields, bin_io]
 
   let compare t t2 = Int.compare t.id t2.id
 
   let new_player ~id =
-    { id; score = 0; username = "Player " ^ Int.to_string id }
+    { id
+    ; submitted = None
+    ; score = 0
+    ; username = "Player " ^ Int.to_string id
+    }
   ;;
 
   let increment_score t ~to_add = t.score <- t.score + to_add
+  let add_guess t ~guess = t.submitted <- Some guess
+
+  let get_current_guess t =
+    match t.submitted with
+    | None -> t.submitted
+    | Some guess ->
+      t.submitted <- None;
+      Some guess
+  ;;
 end
 
 module Room = struct
@@ -382,12 +396,17 @@ module Room = struct
 end
 
 module RE_World_State = struct
-  type t = { mutable room_map : Room.t Int.Map.t } [@@deriving sexp, fields]
+  type t = { mutable room_map : Room.t Int.Map.t }
+  [@@deriving sexp, fields, bin_io]
 
   let get_room t ~(room_id : int) : Room.t = Map.find_exn t.room_map room_id
 
   let add_room t ~(room : Room.t) : unit =
     t.room_map <- Map.add_exn t.room_map ~key:room.id ~data:room
+  ;;
+
+  let add_to_room (t : t) ~player ~(room_id : int) =
+    Room.add_player (Map.find_exn t.room_map room_id) ~player
   ;;
 
   let new_world_state () : t = { room_map = Int.Map.empty }
@@ -398,8 +417,8 @@ module Get_world_state = struct
     Rpc.Rpc.create
       ~name:"get-world-state"
       ~version:0
-      ~bin_query:[%bin_type_class: int]
-      ~bin_response:[%bin_type_class: Row.t list]
+      ~bin_query:[%bin_type_class: unit]
+      ~bin_response:[%bin_type_class: RE_World_State.t]
   ;;
 end
 
@@ -408,8 +427,8 @@ module Create_room = struct
     Rpc.Rpc.create
       ~name:"create-room"
       ~version:0
-      ~bin_query:[%bin_type_class: int]
-      ~bin_response:[%bin_type_class: Row.t list]
+      ~bin_query:[%bin_type_class: int * REPlayer.t]
+      ~bin_response:[%bin_type_class: int]
   ;;
 end
 
@@ -418,7 +437,7 @@ module Join_room = struct
     Rpc.Rpc.create
       ~name:"join-room"
       ~version:0
-      ~bin_query:[%bin_type_class: int]
-      ~bin_response:[%bin_type_class: Row.t list]
+      ~bin_query:[%bin_type_class: RE_World_State.t * REPlayer.t * int]
+      ~bin_response:[%bin_type_class: RE_World_State.t]
   ;;
 end
