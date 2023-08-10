@@ -366,7 +366,11 @@ module Room = struct
     { id; players = [ player ]; house_num = -1 }
   ;;
 
-  let next_house t = t.house_num <- t.house_num + 1
+  let next_house t =
+    t.house_num <- t.house_num + 1;
+    t.house_num
+  ;;
+
   let equal (t : t) (t2 : t) = Int.equal t.id t2.id
   let id_equal (t : int) (t2 : t) = Int.equal t t2.id
 
