@@ -264,6 +264,7 @@ end
 module Room : sig
   type t =
     { id : int
+    ; mutable joinable : bool
     ; mutable players : REPlayer.t list
     ; mutable house_num : int
     }

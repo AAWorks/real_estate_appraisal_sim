@@ -357,13 +357,14 @@ end
 module Room = struct
   type t =
     { id : int
+    ; mutable joinable : bool
     ; mutable players : REPlayer.t list
     ; mutable house_num : int
     }
   [@@deriving compare, sexp, fields, bin_io]
 
   let new_room ~(id : int) ~(player : REPlayer.t) =
-    { id; players = [ player ]; house_num = -1 }
+    { id; joinable = true; players = [ player ]; house_num = 0 }
   ;;
 
   let next_house t =
@@ -375,7 +376,8 @@ module Room = struct
   let id_equal (t : int) (t2 : t) = Int.equal t t2.id
 
   let add_player t ~(player : REPlayer.t) : unit =
-    t.players <- t.players @ [ player ]
+    t.players <- t.players @ [ player ];
+    t.joinable <- false
   ;;
 end
 
@@ -389,4 +391,34 @@ module RE_World_State = struct
   ;;
 
   let new_world_state () : t = { room_map = Int.Map.empty }
+end
+
+module Get_world_state = struct
+  let rpc =
+    Rpc.Rpc.create
+      ~name:"get-world-state"
+      ~version:0
+      ~bin_query:[%bin_type_class: int]
+      ~bin_response:[%bin_type_class: Row.t list]
+  ;;
+end
+
+module Create_room = struct
+  let rpc =
+    Rpc.Rpc.create
+      ~name:"create-room"
+      ~version:0
+      ~bin_query:[%bin_type_class: int]
+      ~bin_response:[%bin_type_class: Row.t list]
+  ;;
+end
+
+module Join_room = struct
+  let rpc =
+    Rpc.Rpc.create
+      ~name:"join-room"
+      ~version:0
+      ~bin_query:[%bin_type_class: int]
+      ~bin_response:[%bin_type_class: Row.t list]
+  ;;
 end
