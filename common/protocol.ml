@@ -388,5 +388,5 @@ module RE_World_State = struct
     t.room_map <- Map.add_exn t.room_map ~key:room.id ~data:room
   ;;
 
-  let new_world_state ~(room : Room.t) : t = { room_map = Int.Map.empty }
+  let new_world_state () : t = { room_map = Int.Map.empty }
 end

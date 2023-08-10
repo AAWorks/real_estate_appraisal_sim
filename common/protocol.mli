@@ -281,5 +281,5 @@ module RE_World_State : sig
 
   val get_room : t -> room_id:int -> Room.t
   val add_room : t -> room:Room.t -> unit
-  val new_world_state : room:Room.t -> t
+  val new_world_state : unit -> t
 end
