@@ -422,13 +422,23 @@ module Get_world_state = struct
   ;;
 end
 
+module Create_player = struct
+  let rpc =
+    Rpc.Rpc.create
+      ~name:"create-room"
+      ~version:0
+      ~bin_query:[%bin_type_class: int]
+      ~bin_response:[%bin_type_class: REPlayer.t]
+  ;;
+end
+
 module Create_room = struct
   let rpc =
     Rpc.Rpc.create
       ~name:"create-room"
       ~version:0
-      ~bin_query:[%bin_type_class: int * REPlayer.t]
-      ~bin_response:[%bin_type_class: int]
+      ~bin_query:[%bin_type_class: RE_World_State.t * int * REPlayer.t]
+      ~bin_response:[%bin_type_class: unit]
   ;;
 end
 
@@ -438,6 +448,6 @@ module Join_room = struct
       ~name:"join-room"
       ~version:0
       ~bin_query:[%bin_type_class: RE_World_State.t * REPlayer.t * int]
-      ~bin_response:[%bin_type_class: RE_World_State.t]
+      ~bin_response:[%bin_type_class: unit]
   ;;
 end
