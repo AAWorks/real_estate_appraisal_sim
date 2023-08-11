@@ -8,7 +8,7 @@ $ ```coming soon...``` <br>
 ## Full Launch Codes
 Clone Repository | ```$``` ```git clone https://github.com/AAWorks/real_estate_appraisal_sim.git``` <br><br>
 Change CWD | ```$``` ```cd real_estate_appraisal_sim``` <br><br>
-Switch to Production Branch | ```$``` ```git checkout prod``` <br><br>
+Switch to a Production Branch | ```$``` ```git checkout [ prod_cmd | prod_server ]``` <br><br>
 Get Dependencies | ```$``` ```make deps``` <br><br>
 Build Executable | ```$``` ```make build ``` <br><br>
 Run Commandline Sim | ```$``` ```make run_base``` <br>
