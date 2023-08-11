@@ -7,7 +7,7 @@ let initialize_connection
   :  unit -> Rpc_websocket.Rpc.Connection_initiated_from.t
   -> Socket.Address.Inet.t -> Rpc.Connection.t -> 's
   =
- fun () _initiated_from inet connection ->
+  fun () _initiated_from inet connection ->
   let user =
     let address = Socket.Address.to_string inet in
     match String.split ~on:':' address with
@@ -48,7 +48,8 @@ let main ~js_file ~port =
       ~mode:`TCP
       ~where_to_listen:(Tcp.Where_to_listen.of_port port)
       ~http_handler
-      ~implementations:(Rpc_implementations.implementations ())
+      ~implementations:
+        (Rpc_implementations.implementations ())
       ~initial_connection_state:initialize_connection
       ()
   in
