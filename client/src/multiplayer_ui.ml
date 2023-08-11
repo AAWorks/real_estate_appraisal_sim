@@ -81,8 +81,6 @@ let house_data_card ~(id : int Value.t) (houses : QuestionBank.t Value.t) =
     ]
 ;;
 
-
-
 let image_carousel (images : string list Value.t) =
   let%sub state, set_state = Bonsai.state 0 in
   let%arr state = state
@@ -120,8 +118,72 @@ let image_carousel (images : string list Value.t) =
     ]
 ;;
 
+let loading_animation =
+  Vdom.Node.div
+    ~attrs:[ Loading.total ]
+    [ Vdom.Node.div
+        ~attrs:[ Loading.hexagon ]
+        [ Vdom.Node.div
+            ~attrs:[ Loading.hexagon__group ]
+            [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ]
+        ; Vdom.Node.div
+            ~attrs:[ Loading.hexagon__group ]
+            [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ]
+        ; Vdom.Node.div
+            ~attrs:[ Loading.hexagon__group ]
+            [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ]
+        ; Vdom.Node.div
+            ~attrs:[ Loading.hexagon__group ]
+            [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ]
+        ; Vdom.Node.div
+            ~attrs:[ Loading.hexagon__group ]
+            [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ]
+        ; Vdom.Node.div
+            ~attrs:[ Loading.hexagon__group ]
+            [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
+            ]
+        ]
+    ]
+;;
+
 let component
   ~id
+  ~room_code
   ~set_url
   ~(houses : QuestionBank.t Value.t)
   ~score
@@ -131,9 +193,27 @@ let component
   @@
   let%sub playing_game =
     match%sub id with
-    | 13 ->
-      Bonsai.const
-      @@
+    | 2 ->
+      (* let game_room =
+        let%sub { last_ok_response; _ } =
+          Rpc_effect.Rpc.poll
+            Protocol.Get_room.rpc
+            ~equal_query:equal_int
+            ~where_to_connect:Self
+            ~every:(Time_ns.Span.of_sec 1.0)
+            room_code
+        in
+        match%arr last_ok_response with
+        | Some (_query, response) -> response
+        | None -> failwith "No Room"
+      in let%sub game_room = game_room in
+      let%arr game_room = game_room in *)
+      (* Generate Random id *)
+      (* Check if id is already created, if so make a new one *)
+      (* Create Room with created Id *)
+      (* Let check if room is full, match false with loading animation screen
+         else set url to game 3 *)
+      let%arr room_code = room_code in
       let top_portion =
         Vdom.Node.div
           ~attrs:[]
@@ -145,83 +225,35 @@ let component
               [ Vdom.Node.text "Property Prodigy" ]
           ; Vdom.Node.h2
               ~attrs:[ Style.second_title; Loading.title_second ]
-              [ Vdom.Node.text "Session Id: 123456" ]
+              [ Vdom.Node.text ("Session Id: " ^ Int.to_string room_code) ]
           ]
       in
-      let loading_animation =
-        Vdom.Node.div
-          ~attrs:[ Loading.total ]
-          [ Vdom.Node.div
-              ~attrs:[ Loading.hexagon ]
-              [ Vdom.Node.div
-                  ~attrs:[ Loading.hexagon__group ]
-                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ]
-              ; Vdom.Node.div
-                  ~attrs:[ Loading.hexagon__group ]
-                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ]
-              ; Vdom.Node.div
-                  ~attrs:[ Loading.hexagon__group ]
-                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ]
-              ; Vdom.Node.div
-                  ~attrs:[ Loading.hexagon__group ]
-                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ]
-              ; Vdom.Node.div
-                  ~attrs:[ Loading.hexagon__group ]
-                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ]
-              ; Vdom.Node.div
-                  ~attrs:[ Loading.hexagon__group ]
-                  [ Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ; Vdom.Node.div ~attrs:[ Loading.hexagon__sector ] []
-                  ]
-              ]
-          ]
-      in
-      Vdom.Node.div ~attrs:[Loading.everything]
+      let loading_animation = loading_animation in
+      Vdom.Node.div
+        ~attrs:[ Loading.everything ]
         [ top_portion
         ; loading_animation
         ; Vdom.Node.div
             ~attrs:[ Loading.text ]
             [ Vdom.Node.text "Waiting For Player 2" ]
         ]
-    | 12 ->
-      let%sub room_code =
+    | 1 ->
+      let%sub room_input =
         Form.Elements.Textbox.int ~placeholder:"Room Code" ()
       in
-      let%arr room_code = room_code in
+      let player_one = Protocol.REPlayer.new_player ~id:1 in
+      let%sub creating_game =
+        let%sub send =
+          Rpc_effect.Rpc.dispatcher
+            Protocol.Create_room.rpc
+            ~where_to_connect:Self
+        in
+        let%arr send = send in
+        fun x -> Effect.ignore_m (send x)
+      in
+      let%arr room_input = room_input
+      and creating_game = creating_game
+      and room_code = room_code in
       Vdom.Node.div
         ~attrs:[]
         [ Vdom.Node.h1
@@ -235,29 +267,32 @@ let component
             [ Vdom.Node.button
                 ~attrs:
                   [ Style.button
-                  ; Vdom.Attr.on_click (fun _ -> set_url (Page.Game 13))
+                  ; Vdom.Attr.on_click (fun _ ->
+                      let%bind.Effect () =
+                        creating_game (room_code, player_one)
+                      in
+                      set_url (Page.Multiplayer 2))
                   ]
                 [ Vdom.Node.text "Create Game" ]
             ; Vdom.Node.div
                 ~attrs:[ Multiplayer.input_group ]
                 [ Vdom.Node.div
                     ~attrs:[ Multiplayer.input ]
-                    [ Form.view_as_vdom room_code ]
+                    [ Form.view_as_vdom room_input ]
                 ; Vdom.Node.button
                     ~attrs:
                       [ Multiplayer.button__submit
-                      ; Vdom.Attr.on_click (fun _ -> set_url (Page.Game 14))
+                      ; Vdom.Attr.on_click (fun _ ->
+                          set_url (Page.Multiplayer 3))
+                        (* Check Id in map of room keys; If exists Add player
+                           to room Send to Page 3 else: Room Not Found *)
                       ]
                     [ Vdom.Node.text "JOIN GAME" ]
                 ]
             ]
         ]
-    | 11 ->
-      let%sub username_textbox =
-        Form.Elements.Textbox.string ~placeholder:"Username" ()
-      in
-      let%sub sleep = Bonsai.Clock.sleep in
-      let%sub send_score =
+    | 13 ->
+      let%sub _send_score =
         let%sub send =
           Rpc_effect.Rpc.dispatcher
             Protocol.Add_entry.rpc
@@ -266,11 +301,7 @@ let component
         let%arr send = send in
         fun x -> Effect.ignore_m (send x)
       in
-
-      let%arr score = score
-      and username_textbox = username_textbox
-      and sleep = sleep
-      and send_score = send_score in
+      let%arr score = score in
       Vdom.Node.div
         [ Vdom.Node.div
             ~attrs:[ Style.game_over; Style.big_body ]
@@ -290,25 +321,6 @@ let component
                       ]
                     [ Vdom.Node.text (Int.to_string score) ]
                 ]
-            ; Vdom.Node.div
-                ~attrs:[ Style.input ]
-                [ (Form.view_as_vdom username_textbox
-                )
-                ]
-            ; Vdom.Node.button
-                ~attrs:
-                  [ Style.save_button
-                  ; Vdom.Attr.on_click (fun _ ->
-                      let%bind.Effect () =
-                        let username =
-                          Form.value_or_default username_textbox ~default:""
-                        in
-                        send_score (username, score)
-                      in
-                      let%bind.Effect () = sleep (Time_ns.Span.of_sec 0.5) in
-                      set_url Page.Leaderboard)
-                  ]
-                [ Vdom.Node.text "Save Score" ]
             ; Vdom.Node.button
                 ~attrs:
                   [ Style.save_button

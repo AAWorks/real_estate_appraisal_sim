@@ -51,7 +51,7 @@ body {
     background-color: #000000
   }
 
-.input-group {
+.input_group {
     display: flex;
     align-items: center;
   }
@@ -67,7 +67,7 @@ body {
     background-color: transparent;
   }
   
-.button--submit {
+.button__submit {
     min-height: 50px;
     padding: .5em 1em;
     border: 1px solid rgba(0, 0, 0, 0.731);
@@ -76,12 +76,11 @@ body {
     color: rgba(0, 0, 0, 0.5);
     font-size: 17px;
     cursor: pointer;
-    /* transition: background-color .5s ease-in-out; */
     transition: all .5s ease;
 
-  }
+}
   
-.button--submit:hover {
+.button__submit:hover {
     color: #F1E3D3;
     background-color: #000000
   }

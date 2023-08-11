@@ -5,12 +5,14 @@ module T = struct
   type t =
     | Homepage
     | Game of int
+    | Multiplayer of int
     | Leaderboard
   [@@deriving sexp, equal, typed_variants]
 
   let parser_for_variant : type a. a Typed_variant.t -> a Parser.t = function
     | Homepage -> Parser.end_of_path Parser.unit
     | Game -> Parser.from_path Value_parser.int
+    | Multiplayer -> Parser.from_path Value_parser.int
     | Leaderboard -> Parser.unit
   ;;
 end

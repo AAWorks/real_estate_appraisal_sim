@@ -29,8 +29,25 @@
     font-size: calc(20px + (30 - 20) * (100vw - 320px) / (1280 - 320));
     text-align: center;
     margin-top:80px;
-
+    /* animation:extend 3s steps(3, end); */
+  display:inline-block;
+  overflow:hidden;
+  vertical-align:bottom;
 }
+
+.text:after {
+    animation:extend 3s steps(3, end);
+    content:"...";
+  }
+
+@keyframes extend {
+    0% {
+      width:.25em;
+    }
+    100% {
+      width:1em;
+    }
+  }
 .total {
 	background: transparent;
 	color: #17181c;
@@ -133,13 +150,7 @@
 .hexagon__sector:after {
 	transform: rotate(-150deg)
 }
-/* Dark theme */
-@media (prefers-color-scheme: dark) {
-	:root {
-		--bg: #17181c;
-		--fg: #e3e4e8;
-	}
-}
+
 /* Animations */
 @keyframes moveOut1 {
 	from { transform: translateY(0) scale(0); }

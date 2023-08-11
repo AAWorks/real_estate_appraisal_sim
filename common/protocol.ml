@@ -425,7 +425,7 @@ end
 module Create_player = struct
   let rpc =
     Rpc.Rpc.create
-      ~name:"create-room"
+      ~name:"create-player"
       ~version:0
       ~bin_query:[%bin_type_class: int]
       ~bin_response:[%bin_type_class: REPlayer.t]
