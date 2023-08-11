@@ -294,12 +294,15 @@ module Get_world_state : sig
 end
 
 module Create_room : sig
-  val rpc : (int * REPlayer.t, int) Async_rpc_kernel.Rpc.Rpc.t
+  val rpc
+    : (RE_World_State.t * int * REPlayer.t, unit) Async_rpc_kernel.Rpc.Rpc.t
+end
+
+module Create_player : sig
+  val rpc : (int, REPlayer.t) Async_rpc_kernel.Rpc.Rpc.t
 end
 
 module Join_room : sig
   val rpc
-    : ( RE_World_State.t * REPlayer.t * int
-      , RE_World_State.t )
-      Async_rpc_kernel.Rpc.Rpc.t
+    : (RE_World_State.t * REPlayer.t * int, unit) Async_rpc_kernel.Rpc.Rpc.t
 end
